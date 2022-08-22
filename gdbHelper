@@ -1,0 +1,35 @@
+tui enable
+#b alloc.c:41
+b alloc.c:71
+#b io.c:17
+run
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# gdb ./allocTest -ex "so gdbHelper"
+#
+#
+# tui enable
+# layout split
+# layout asm
+# layout reg
+#
+#
+# continue : bis zum nächsten breakpoint
+# step : schritt in die funktion
+# next : schritt über die funktion
+#
+#
+# info registers
+# info registers regname …
+#
+#
+# strg shift p : im grafik modus letzter befehl (ähnlich pfeil noch oben im terminal)
+#
+#

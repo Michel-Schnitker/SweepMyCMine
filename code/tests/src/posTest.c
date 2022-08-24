@@ -3,6 +3,9 @@
 #include "pos.h"
 
 void posCreateTest(){
+
+    //todo: add log message
+
     Pos * p = createPos(2,3);
     assert(p->x == 2);
     assert(p->y == 3);
@@ -10,6 +13,9 @@ void posCreateTest(){
 }
 
 void posCloneTest(){
+
+    //todo: add log message
+
     Pos *p = createPos(2,3);
     Pos *w = p->clone(p);
     assert(p != w);
@@ -20,6 +26,9 @@ void posCloneTest(){
 }
 
 void PosTest(){
+
+    //todo: add log message
+
     posCloneTest();
     posCreateTest();
 }

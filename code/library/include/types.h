@@ -2,7 +2,8 @@
 #define TYPES_H_
 
 #include <assert.h>
-
+#include <stdint.h>
+#include <stdbool.h>
 
 #define not !
 #define and &&

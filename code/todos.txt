@@ -1,0 +1,4 @@
+todo: Prio 1 -> implement list.c
+todo: Prio 2 -> implement logging.c
+todo: Prio 3 -> write readme transfer todos to readme
+todo: Prio 4 -> test for board.c

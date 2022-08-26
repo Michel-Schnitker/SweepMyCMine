@@ -1,4 +1,13 @@
 todo: Prio 1 -> implement list.c
+        todo: -> test for list.c
 todo: Prio 2 -> implement logging.c
+        todo: -> test for logging.c
+
 todo: Prio 3 -> write readme transfer todos to readme
+
 todo: Prio 4 -> test for board.c
+todo: Prio 5 -> implement tui
+        todo: -> refactoring all
+
+todo: Prio 6 -> Is it necessary to look for a better test unit?
+todo: Prio 7 -> implement greedy solver

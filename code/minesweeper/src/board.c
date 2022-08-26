@@ -49,6 +49,7 @@ Cell ** createField(uint32_t xSize, uint32_t ySize){
 
 Board * createBoard(uint32_t xSize, uint32_t ySize, uint32_t bombs){
     Board * newBoard = calloc(1,sizeof(Board));
+    nonNull(newBoard);
 
     newBoard->xSize = xSize;
     newBoard->ySize = ySize;

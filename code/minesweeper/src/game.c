@@ -18,6 +18,7 @@ void startNewGame(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
 void startThisGame(Board *board){
 
+//    nonNull(board);
     //todo: check if *board is valid
     currentBoard = board;
 

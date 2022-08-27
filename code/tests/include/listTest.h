@@ -4,6 +4,6 @@
 
 #include "types.h"
 
-void ListTest();
+void listTest();
 
 #endif //LISTTEST_H

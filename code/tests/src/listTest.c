@@ -72,7 +72,7 @@ void deleteTest(){
     //todo:
 }
 
-void ListTest(){
+void listTest(){
 
     //todo: add log message
 

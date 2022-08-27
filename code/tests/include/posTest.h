@@ -4,6 +4,6 @@
 
 #include "types.h"
 
-void PosTest();
+void posTest();
 
 #endif //POSTEST_H

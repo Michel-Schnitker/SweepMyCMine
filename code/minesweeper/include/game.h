@@ -12,8 +12,6 @@ void startNewGame(uint32_t xSize, uint32_t ySize, uint32_t bombs);
 
 void startThisGame(Board *board);
 
-//void startZenarioGame(); //todo: start fixed zenario with list of bomb pos.
-
 void markAsBomb(Pos * pos);
 
 void obenCell(Pos * pos);

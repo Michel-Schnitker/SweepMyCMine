@@ -2,7 +2,7 @@
 
 #include "pos.h"
 
-void * clonePos(Pos *pos){
+void * clone(Pos *pos){
     nonNull(pos);
     return createPos(pos->x, pos->y);
 }
@@ -14,8 +14,13 @@ void freePos(Pos *pos){
 
 void printPos(Pos *pos){
     nonNull(pos);
+
     UNREACHABLE;
     //todo:
+}
+
+int compare(Pos *posOne, Pos *posTwo){
+    return (int)(posOne->x == posTwo->x and posOne->y == posTwo->y);
 }
 
 Pos * createPos(uint32_t x, uint32_t y){
@@ -26,7 +31,8 @@ Pos * createPos(uint32_t x, uint32_t y){
     newPos->y = y;
 
     newPos->free = freePos;
-    newPos->clone = clonePos;
+    newPos->clone = clone;
     newPos->print = printPos;
+    newPos->compare = compare;
     return newPos;
 }

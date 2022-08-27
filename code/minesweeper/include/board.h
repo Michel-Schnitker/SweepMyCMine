@@ -1,7 +1,8 @@
 #ifndef BOARD_H_
 #define BOARD_H_
 
-#include "types.h"
+#include "pos.h"
+#include "list.h"
 
 typedef struct Cell {
     bool concealed;
@@ -28,7 +29,11 @@ typedef struct Board {
 } Board;
 
 
-Board * createBoard(uint32_t xSize, uint32_t ySize, uint32_t bombs);
+Board * constructFullyRandomBoard(uint32_t xSize, uint32_t ySize, uint32_t bombs);
+
+Board * constructRandBoardWithBombproofPos(uint32_t xSize, uint32_t ySize, uint32_t bombs, Pos *bombproofPos);
+
+Board * constructBoardByListsOfPos(uint32_t xSize, uint32_t ySize, List *bombs, List *markAsBombs, List *obenCells);
 
 
 #endif  // BOARD_H_

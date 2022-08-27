@@ -1,5 +1,4 @@
-todo: Prio 1 -> implement list.c
-        todo: -> test for list.c
+todo: Prio 1 -> test for list.c
 todo: Prio 2 -> implement logging.c
         todo: -> test for logging.c
 

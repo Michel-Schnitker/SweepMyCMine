@@ -8,7 +8,7 @@ static Board * currentBoard;
 void startNewGame(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
     //todo: check if xSize, ySize and bombs is valid
-    currentBoard = createBoard(xSize, ySize, bombs);
+    currentBoard = constructFullyRandomBoard(xSize, ySize, bombs);
 
 
 
@@ -27,8 +27,6 @@ void startThisGame(Board *board){
 
 
 }
-
-//void startZenarioGame(){} //todo: start fixed zenario with list of bomb pos.
 
 
 

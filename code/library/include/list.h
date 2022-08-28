@@ -9,13 +9,15 @@ typedef struct ListElement {
     void *payload;
 } ListElement;
 
+//todo: make list thread safe
+
 /**
  * Notes for the documentary:
  *      delete      List must be empty to delete. If the list is not empty when deleting, the delete function is executed for each payload.
  *      remove      If the compare function is zero the pointer is compared, if not then the function decides if these payloads are equal.
  *      remove      if the delete function is non-zero, the payload is executed on the delete function, if not, the payload is not deleted.
- *
- *
+ *      delete      specific parameters of the delete function
+ *      add         always add to the tail
  *
  */
 
@@ -57,6 +59,6 @@ typedef struct List {
 
 } List;
 
-List * createList();
+List * new_List();
 
 #endif  // LIST_H_

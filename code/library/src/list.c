@@ -111,10 +111,11 @@ ListElement *getListElementFromIndex(List *list, uint32_t index){
     nonNull(list);
     assert(index < list->size);
 
-    ListElement *current;
-    for (int i = 0; i < index; ++i) {
+    ListElement *current = list->_head;
+    for (uint32_t i = 0; i < index; ++i) {
         current = current->next;
     }
+    return current;
 }
 
 
@@ -188,7 +189,7 @@ void clear(List *list, void (*deleteElemFunc)(void *payload)) {
     nonNull(list);
     nonNull(deleteElemFunc);
 
-    for (int i = 0; i < list->size; ++i) {
+    for (uint32_t i = 0; i < list->size; ++i) {
         deleteElemFunc(list->popFirst(list));
     }
 }
@@ -209,13 +210,13 @@ void extend(List *list, List *otherList) {
     nonNull(list);
     nonNull(otherList);
 
-    for (int i = 0; i < otherList->size; ++i) {
+    for (uint32_t i = 0; i < otherList->size; ++i) {
         list->add(list, otherList->getIndex(otherList, i));
     }
 }
 
 
-List * createList(){
+List * new_List(){
     List *newList = calloc(1, sizeof(List));
     nonNull(newList);
 

@@ -6,9 +6,11 @@
 #include "config.h"
 #include "testSuite.h"
 
-#include "board.h"
-#include "pos.h"
+#include "event.h" //todo: delete
+#include "board.h" //todo: delete
+#include "pos.h" //todo: delete
 #include "game.h"
+
 
 int main(int argc, char *argv[]) {
 
@@ -16,17 +18,28 @@ int main(int argc, char *argv[]) {
 
 
 
-    printf("hello World\n");
+    printf("\nhello World\n");
 
 
 
 
-    Board *b = createBoard(10,10,0);
+
+
+//    print_success("print_success");
+//    print_info("print_info");
+//    print_trace("print_trace");
+//    print_debug("print_debug");
+//    print_warning("print_warn");
+//    print_error("print_error");
+//    print_fatal("print_fatal");
+
+
+    Board *b = constructFullyRandomBoard(10,10,10);
     b->print(b);
     b->free(b);
 
-    Pos *p = createPos(1,2);
-    p->free(p);
+//    Pos *p = new_Pos(1,2);
+//    p->free(p);
 
 
 }

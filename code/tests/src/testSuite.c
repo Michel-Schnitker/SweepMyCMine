@@ -6,7 +6,7 @@
 
 void runAllTests(){
     posTest();
-    boardTest();
     listTest();
     randomTest();
+    boardTest();
 }

@@ -1,80 +1,101 @@
 
 #include "listTest.h"
 #include "list.h"
+#include "event.h"
 
 void addAndGetTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for add to list and get from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void addAndPopTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for add to list and pop from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void getIndexTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for get index from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void getCompareTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for get with compare from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void popIndexTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for pop index from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void popCompareTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for pop compare from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void extendTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for extend list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void removeTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for remove from list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void clearTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for clear list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void deleteTest(){
 
-    //todo: add log message
+    print_info("    Running Tests for delete list ...");
 
     //todo:
+
+    print_warning("         Test not implement ...");
 }
 
 void listTest(){
 
-    //todo: add log message
+    print_info("Running Tests for list.c");
 
     addAndGetTest();
     addAndPopTest();

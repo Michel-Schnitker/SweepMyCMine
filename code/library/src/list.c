@@ -1,7 +1,7 @@
 #include "list.h"
 
 #include <stdlib.h>
-
+#include "event.h"
 
 void add(List *list, void *payload) {
     nonNull(list);
@@ -61,7 +61,7 @@ void unhookElement(List *list, ListElement *elem){
 }
 
 
-ListElement *getListElementFromCompare(List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo)){
+ListElement *getListElementFromCompare(List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo)){
     nonNull(list);
     nonNull(payload);
     nonNull(compareElemFunc);
@@ -88,7 +88,7 @@ ListElement *getListElementFromPayloadPointer(List *list, void *payload){
 }
 
 
-void removeElem(List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo), void (*deleteElemFunc)(void *payload)) {
+void removeElem(List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo), void (*deleteElemFunc)(void *payload)) {
     nonNull(list);
     nonNull(payload);
 
@@ -142,7 +142,7 @@ void *popIndex(List *list, uint32_t index) {
 }
 
 
-void *getCompare(List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo)) {
+void *getCompare(List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo)) {
     //todo: the following function takes over the check
     nonNull(list);
     nonNull(payload);
@@ -156,7 +156,7 @@ void *getCompare(List *list, void *payload, int (*compareElemFunc)(void *payload
 }
 
 
-void *popCompare(List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo)) {
+void *popCompare(List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo)) {
     //todo: the following function takes over the check
     nonNull(list);
     nonNull(payload);
@@ -235,4 +235,6 @@ List * new_List(){
     newList->remove = removeElem;
     newList->clear = clear;
     newList->delete = delete;
+
+    return newList;
 }

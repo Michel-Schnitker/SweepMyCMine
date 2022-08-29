@@ -10,6 +10,7 @@ typedef struct ListElement {
 } ListElement;
 
 //todo: make list thread safe
+//todo: implement "foreach"
 
 /**
  * Notes for the documentary:
@@ -45,15 +46,15 @@ typedef struct List {
 
     void *(*getFirst)(struct List *list);
     void *(*getIndex)(struct List *list, uint32_t index);
-    void *(*getCompare)(struct List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo));
+    void *(*getCompare)(struct List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo));
 
     void *(*popFirst)(struct List *list);
     void *(*popIndex)(struct List *list, uint32_t index);
-    void *(*popCompare)(struct List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo));
+    void *(*popCompare)(struct List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo));
 
     void (*extend)(struct List *list, struct List *otherList);
 
-    void (*remove)(struct List *list, void *payload, int (*compareElemFunc)(void *payloadOne, void *payloadTwo), void (*deleteElemFunc)(void *payload));
+    void (*remove)(struct List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo), void (*deleteElemFunc)(void *payload));
     void (*clear)(struct List *list, void (*deleteElemFunc)(void *payload));
     void (*delete)(struct List *list, void (*deleteElemFunc)(void *payload));
 

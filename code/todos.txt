@@ -1,8 +1,8 @@
 todo: Prio 1  -> test for list.c
 todo: Prio 2  -> write readme and transfer todos to readme
 
-todo: Prio 3  -> finish board.c and game.c
-todo: Prio 4  -> test for board.c and game.c
+todo: Prio 3  -> implement game.c
+todo: Prio 4  -> test game.c
 
 todo: Prio 5  -> implement first testinterface for gametests
 todo: Prio 6  -> refactoring of the complete code

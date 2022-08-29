@@ -8,8 +8,15 @@ void posCreateTest(){
     print_info("    Running Tests for create Pos ...");
 
     Pos * p = new_Pos(2,3);
+
+    nonNull(p->free);
+    nonNull(p->clone);
+    nonNull(p->print);
+    nonNull(p->compare);
+
     assert(p->x == 2);
     assert(p->y == 3);
+
     p->free(p);
 
     print_success("         Passed");

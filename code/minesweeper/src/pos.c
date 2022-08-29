@@ -4,7 +4,7 @@
 
 void * clone(Pos *pos){
     nonNull(pos);
-    return createPos(pos->x, pos->y);
+    return new_Pos(pos->x, pos->y);
 }
 
 void freePos(Pos *pos){
@@ -19,11 +19,11 @@ void printPos(Pos *pos){
     //todo:
 }
 
-int compare(Pos *posOne, Pos *posTwo){
+int comparePos(Pos *posOne, Pos *posTwo){
     return (int)(posOne->x == posTwo->x and posOne->y == posTwo->y);
 }
 
-Pos * createPos(uint32_t x, uint32_t y){
+Pos * new_Pos(uint32_t x, uint32_t y){
     Pos *newPos = malloc(sizeof(Pos));
     nonNull(newPos);
 
@@ -33,6 +33,6 @@ Pos * createPos(uint32_t x, uint32_t y){
     newPos->free = freePos;
     newPos->clone = clone;
     newPos->print = printPos;
-    newPos->compare = compare;
+    newPos->compare = comparePos;
     return newPos;
 }

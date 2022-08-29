@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 //    print_fatal("print_fatal");
 
 
-    Board *b = constructFullyRandomBoard(10,10,10);
+    Board *b = constructFullyRandomBoard(10,10,30);
     b->print(b);
     b->free(b);
 

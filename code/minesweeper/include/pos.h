@@ -13,6 +13,6 @@ typedef struct Pos {
     int (*compare)(struct Pos *posOne, struct Pos *posTwo);
 } Pos;
 
-Pos * createPos(uint32_t x, uint32_t y);
+Pos * new_Pos(uint32_t x, uint32_t y);
 
 #endif  // POS_H_

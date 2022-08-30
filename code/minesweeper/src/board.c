@@ -139,15 +139,17 @@ Board * createBoard(uint32_t xSize, uint32_t ySize){
     return newBoard;
 }
 
-void checkConstructParameter(uint32_t xSize, uint32_t ySize, uint32_t bombs){
-    assert(xSize >= BOARD_MINSIZE_X and ySize >= BOARD_MINSIZE_Y);
-    assert(xSize <= BOARD_MAXSIZE_X and ySize <= BOARD_MAXSIZE_Y);
-    assert(bombs < xSize * ySize);
-    assert(bombs > 0);
+bool checkConstructParameter(uint32_t xSize, uint32_t ySize, uint32_t bombs){
+
+    return(xSize >= BOARD_MINSIZE_X and ySize >= BOARD_MINSIZE_Y and
+           xSize <= BOARD_MAXSIZE_X and ySize <= BOARD_MAXSIZE_Y and
+           bombs < xSize * ySize and
+           bombs > 0
+    );
 }
 
 Board * constructFullyRandomBoard(uint32_t xSize, uint32_t ySize, uint32_t bombs){
-    checkConstructParameter(xSize, ySize, bombs);
+    assert(checkConstructParameter(xSize, ySize, bombs));
 
     Board * newBoard = createBoard(xSize, ySize);
     placeRandomBombs(newBoard, bombs, null);
@@ -155,7 +157,7 @@ Board * constructFullyRandomBoard(uint32_t xSize, uint32_t ySize, uint32_t bombs
 }
 
 Board * constructRandBoardWithBombproofPos(uint32_t xSize, uint32_t ySize, uint32_t bombs, Pos *bombproofPos){
-    checkConstructParameter(xSize, ySize, bombs);
+    assert(checkConstructParameter(xSize, ySize, bombs));
 
     Board * newBoard = createBoard(xSize, ySize);
     placeRandomBombs(newBoard, bombs, bombproofPos);
@@ -163,7 +165,7 @@ Board * constructRandBoardWithBombproofPos(uint32_t xSize, uint32_t ySize, uint3
 }
 
 Board * constructBoardByListsOfPos(uint32_t xSize, uint32_t ySize, List *bombs){
-    checkConstructParameter(xSize, ySize, bombs->size);
+    assert(checkConstructParameter(xSize, ySize, bombs->size));
 
     Board * newBoard = createBoard(xSize, ySize);
 

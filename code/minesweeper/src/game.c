@@ -1,11 +1,12 @@
-
 #include "game.h"
 
 
 
 static Board * currentBoard;
 
-void startNewGame(uint32_t xSize, uint32_t ySize, uint32_t bombs){
+void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs){
+
+    if(not checkConstructParameter(xSize, ySize, bombs)){ return;}
 
     //todo: check if xSize, ySize and bombs is valid
     currentBoard = constructFullyRandomBoard(xSize, ySize, bombs);
@@ -16,9 +17,10 @@ void startNewGame(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
 }
 
-void startThisGame(Board *board){
 
-//    nonNull(board);
+void game_startThis(Board *board){
+    nonNull(board);
+
     //todo: check if *board is valid
     currentBoard = board;
 
@@ -28,6 +30,30 @@ void startThisGame(Board *board){
 
 }
 
+
+void game_mark(Pos * pos){
+    if(currentBoard == null or
+    currentBoard->gameFinish or
+    not isPosValid(currentBoard, pos)){
+        return;
+    }
+
+
+}
+
+
+void game_open(Pos * pos){
+    if(currentBoard == null){return;}
+
+
+}
+
+
+void game_capitulation(){
+    if(currentBoard == null){return;}
+
+
+}
 
 
 

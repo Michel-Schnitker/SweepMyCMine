@@ -1,3 +1,4 @@
+
 #ifndef GAME_H_
 #define GAME_H_
 
@@ -8,15 +9,15 @@
 //todo: wrap in own thread
 
 
-void startNewGame(uint32_t xSize, uint32_t ySize, uint32_t bombs);
+void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs);
 
-void startThisGame(Board *board);
+void game_startThis(Board *board);
 
-void markAsBomb(Pos * pos);
+void game_mark(Pos * pos);
 
-void obenCell(Pos * pos);
+void game_open(Pos * pos);
 
-void gameCapitulation();
+void game_capitulation();
 
 
 //todo: Return of the game states
@@ -26,4 +27,5 @@ void gameCapitulation();
 
 
 
-#endif  // GAME_H_
+
+#endif //GAME_H_

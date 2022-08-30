@@ -1,9 +1,9 @@
 
-#ifndef POSTEST_H
-#define POSTEST_H
+#ifndef POSTEST_H_
+#define POSTEST_H_
 
 #include "types.h"
 
 void posTest();
 
-#endif //POSTEST_H
+#endif //POSTEST_H_

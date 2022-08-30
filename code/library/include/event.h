@@ -1,10 +1,12 @@
+
 #ifndef EVENT_H_
 #define EVENT_H_
 
-#include <types.h>
 #include <stdarg.h>
 #include <time.h>
 #include <stdio.h>
+
+#include "types.h"
 
 #define EVENT_COLORING true
 #define EVENT_STREAM stdout // stderr, stdout or file

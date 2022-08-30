@@ -1,6 +1,9 @@
+
 #ifndef BOARD_H_
 #define BOARD_H_
 
+
+#include "types.h"
 #include "pos.h"
 #include "list.h"
 
@@ -30,6 +33,8 @@ typedef struct Board {
 
 bool isPosValid(Board * board, Pos *pos);
 
+bool checkConstructParameter(uint32_t xSize, uint32_t ySize, uint32_t bombs);
+
 Board * constructFullyRandomBoard(uint32_t xSize, uint32_t ySize, uint32_t bombs);
 
 Board * constructRandBoardWithBombproofPos(uint32_t xSize, uint32_t ySize, uint32_t bombs, Pos *bombproofPos);
@@ -38,4 +43,4 @@ Board * constructBoardByListsOfPos(uint32_t xSize, uint32_t ySize, List *bombs);
 
 
 
-#endif  // BOARD_H_
+#endif  //BOARD_H_

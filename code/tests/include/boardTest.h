@@ -1,9 +1,9 @@
 
-#ifndef BOARDTEST_H
-#define BOARDTEST_H
+#ifndef BOARDTEST_H_
+#define BOARDTEST_H_
 
 #include "types.h"
 
 void boardTest();
 
-#endif //BOARDTEST_H
+#endif //BOARDTEST_H_

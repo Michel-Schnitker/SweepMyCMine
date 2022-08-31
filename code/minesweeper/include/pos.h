@@ -5,8 +5,8 @@
 #include "types.h"
 
 typedef struct Pos {
-    uint32_t x;
-    uint32_t y;
+    int32_t x;
+    int32_t y;
 
     void (*free)(struct Pos *pos);
     void *(*clone)(struct Pos *pos);
@@ -14,6 +14,6 @@ typedef struct Pos {
     int (*compare)(struct Pos *posOne, struct Pos *posTwo);
 } Pos;
 
-Pos * new_Pos(uint32_t x, uint32_t y);
+Pos * new_Pos(int32_t x, int32_t y);
 
 #endif  // POS_H_

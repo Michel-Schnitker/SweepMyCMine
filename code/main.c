@@ -14,6 +14,7 @@
 
 int main(int argc, char *argv[]) {
 
+    assert(argc == 1);
     runAllTests();
 
 
@@ -34,9 +35,17 @@ int main(int argc, char *argv[]) {
 //    print_fatal("print_fatal");
 
 
-    Board *b = constructFullyRandomBoard(10,10,30);
-    b->print(b);
-    b->free(b);
+//    Board *b = constructFullyRandomBoard(10,10,30);
+//    b->print(b);
+//    b->free(b);
+
+
+    game_startNew(10,10,10);
+    game_print();
+    Pos pos1 ={ .x = 2, .y = 3 };
+    game_open(&pos1);
+    game_print();
+
 
 //    Pos *p = new_Pos(1,2);
 //    p->free(p);

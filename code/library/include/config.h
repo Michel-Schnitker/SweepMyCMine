@@ -11,7 +11,7 @@
 #define BOARD_SIGN_CONCEALED "?"
 #define BOARD_SIGN_BOMB "B"
 
-#define DEBUGMODE true
+#define DEBUGMODE false
 
 
 #endif  // CONFIG_H_

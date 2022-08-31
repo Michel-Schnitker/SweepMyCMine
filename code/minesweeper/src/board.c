@@ -65,11 +65,11 @@ Cell ** createField(uint32_t xSize, uint32_t ySize){
     return newField;
 }
 
-bool _isPosValid(Board * board, uint32_t x, uint32_t y){
+bool _isPosValid(Board * board, int32_t x, int32_t y){
     return x >= 0 and
            y >= 0 and
-           x < board->xSize and
-           y < board->ySize;
+           x < (int32_t) board->xSize and
+           y < (int32_t) board->ySize;
 }
 
 bool isPosValid(Board * board, Pos *pos){

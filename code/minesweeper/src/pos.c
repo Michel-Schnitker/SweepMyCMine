@@ -23,7 +23,7 @@ int comparePos(Pos *posOne, Pos *posTwo){
     return (int)(posOne->x == posTwo->x and posOne->y == posTwo->y);
 }
 
-Pos * new_Pos(uint32_t x, uint32_t y){
+Pos * new_Pos(int32_t x, int32_t y){
     Pos *newPos = malloc(sizeof(Pos));
     nonNull(newPos);
 

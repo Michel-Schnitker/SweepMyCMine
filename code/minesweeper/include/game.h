@@ -11,16 +11,17 @@
 
 void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs);
 
-void game_startThis(Board *board);
+bool game_startThis(Board *board);
 
-void game_mark(Pos * pos);
+bool game_mark(Pos * pos);
 
-void game_open(Pos * pos);
+bool game_open(Pos * pos);
 
 void game_capitulation();
 
 
 //todo: Return of the game states
+void game_print(); //todo: debug
 
 //todo: return of the current game field (concealed)
 //todo: implement enum for field interpretation

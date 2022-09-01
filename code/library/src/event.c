@@ -1,5 +1,7 @@
 #include "event.h"
 
+#define COUNT_LEVELS 7
+
 static const char *level_strings[] = {
         [EVENT_SUCCESS] = "SUCCESS",
         [EVENT_INFO] = "INFO",
@@ -24,6 +26,15 @@ static const char *level_colors[] = {
 
 #endif
 
+static bool levelEnable[NUM_OF_LEVELS] = {
+        [EVENT_SUCCESS] = EVENT_SUCCESS_ENABLE_DEFAULT,
+        [EVENT_INFO] = EVENT_INFO_ENABLE_DEFAULT,
+        [EVENT_TRACE] = EVENT_TRACE_ENABLE_DEFAULT,
+        [EVENT_DEBUG] = EVENT_DEBUG_ENABLE_DEFAULT,
+        [EVENT_WARNING] = EVENT_WARNING_ENABLE_DEFAULT,
+        [EVENT_ERROR] = EVENT_ERROR_ENABLE_DEFAULT,
+        [EVENT_FATAL] = EVENT_FATAL_ENABLE_DEFAULT,
+};
 
 static void printEventElement(eventElement *event) {
     char timeStamp[16];
@@ -68,6 +79,8 @@ static void printEventElement(eventElement *event) {
 
 void printEvent(int level, const char *file, int line, const char *func, const char *fmt, ...) {
 
+    if(not levelEnable[level]) return;
+
     eventElement ev = {
             .fmt   = fmt,
             .file  = file,
@@ -86,4 +99,21 @@ void printEvent(int level, const char *file, int line, const char *func, const c
     va_start(ev.ap, fmt);
     printEventElement(&ev);
     va_end(ev.ap);
+}
+
+void setEnableingForEvents(enum eventLevel level, bool req){
+    for (int i = 0; i < COUNT_LEVELS; ++i) {
+        if(level & (1<<0)){
+            levelEnable[(1<<i)] = req;
+        }
+        level = level >> 1;
+    }
+}
+
+void enableEvent(enum eventLevel level){
+    setEnableingForEvents(level, true);
+}
+
+void disableEvent(enum eventLevel level){
+    setEnableingForEvents(level, false);
 }

@@ -62,7 +62,7 @@ void FullyRandomTest(){
 
     testBoard->free(testBoard);
 
-    print_success("         Passed ...");
+    print_success("         Passed");
 }
 
 void BoardWithBombproofPosTest(){
@@ -89,7 +89,7 @@ void BoardWithBombproofPosTest(){
     testBoard->free(testBoard);
 
 
-    print_success("         Passed ...");
+    print_success("         Passed");
 }
 
 void BoardByBombListTest(){
@@ -120,7 +120,7 @@ void BoardByBombListTest(){
 
     testBoard->free(testBoard);
 
-    print_success("         Passed ...");
+    print_success("         Passed");
 }
 
 void boardTest(){

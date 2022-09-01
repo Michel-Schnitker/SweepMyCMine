@@ -19,9 +19,9 @@ bool game_open(Pos * pos);
 
 void game_capitulation();
 
+void destroyBoard();
 
 //todo: Return of the game states
-void game_print(); //todo: debug
 
 //todo: return of the current game field (concealed)
 //todo: implement enum for field interpretation

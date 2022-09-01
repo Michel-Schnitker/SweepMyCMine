@@ -40,12 +40,12 @@ int main(int argc, char *argv[]) {
 //    b->free(b);
 
 
-    game_startNew(10,10,10);
-    game_print();
-    Pos pos1 ={ .x = 2, .y = 3 };
-    game_open(&pos1);
-    game_print();
-
+//    game_startNew(10,10,40);
+//    Board *board = game_debugReturnBoard();
+//    board->print(board);
+//    Pos pos1 ={ .x = 2, .y = 3 };
+//    game_open(&pos1);
+//    board->print(board);
 
 //    Pos *p = new_Pos(1,2);
 //    p->free(p);

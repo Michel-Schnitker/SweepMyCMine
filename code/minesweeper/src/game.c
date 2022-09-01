@@ -1,6 +1,6 @@
 #include "game.h"
 #include "event.h"
-
+#include "config.h"
 
 static Board * currentBoard;
 
@@ -21,6 +21,9 @@ void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 bool game_startThis(Board *board){
     nonNull(board);
 
+#if START_WITH_FIRST_SAFE_POS
+    print_warning("Attention Game is played with FIRST_SAFE_POS. There may be a new board after the first run.");
+#endif
 
 
     //todo: check if *board is valid. if not return false;
@@ -57,16 +60,22 @@ bool _checkBeforeMove(Pos * pos){
 void _checkWon(){
 
     if(not currentBoard->gameFinish and
-    currentBoard->openCells == currentBoard->bombs){
+       ((currentBoard->xSize * currentBoard->ySize) - currentBoard->openCells) == currentBoard->bombs){
         currentBoard->gameFinish = true;
         currentBoard->gameWon = true;
+        print_info("win a Game.");
     }
 }
 
 void _openCellsInArea(Pos * pos){
 
-    if(isPosValid(currentBoard, pos)){
+    if(isPosValid(currentBoard, pos) and currentBoard->field[pos->y][pos->x].concealed){
         currentBoard->field[pos->y][pos->x].concealed = false;
+        currentBoard->openCells++;
+    }
+
+    if(currentBoard->field[pos->y][pos->x].bombsAround > 0 or currentBoard->field[pos->y][pos->x].containsBomb){
+        return;
     }
 
     int32_t lowerX = pos->x -1, upperX = pos->x +1;
@@ -81,13 +90,14 @@ void _openCellsInArea(Pos * pos){
                     .y = y,
             };
 
-            if(isPosValid(currentBoard,&newPos)){
+            if(isPosValid(currentBoard,&newPos) and currentBoard->field[y][x].concealed){
 
-                if(currentBoard->field[y][x].bombsAround == 0 and currentBoard->field[y][x].concealed){
+                if(currentBoard->field[y][x].bombsAround == 0){
                     _openCellsInArea(&newPos);
                 }
                 else{
                     currentBoard->field[y][x].concealed = false;
+                    currentBoard->openCells++;
                 }
 
             }
@@ -111,6 +121,31 @@ bool game_mark(Pos * pos){
 }
 
 
+void _checkIfFirstPos(Pos *pos){
+    if(currentBoard->gameStarted){
+        return;
+    }
+    nonNull(pos);
+
+
+#if START_WITH_FIRST_SAFE_POS
+    if(currentBoard->gameFinish or currentBoard->field[pos->y][pos->x].bombsAround != 0){
+
+        uint32_t x = currentBoard->xSize, y = currentBoard->ySize, bombs = currentBoard->bombs;
+        currentBoard->free(currentBoard);
+        currentBoard = constructRandBoardWithBombproofPos(x,
+                                                          y,
+                                                          bombs,
+                                                          pos);
+
+
+    }
+#endif
+
+    currentBoard->gameStarted = true;
+}
+
+
 bool game_open(Pos * pos){
     if(not _checkBeforeMove(pos)){
         return false;
@@ -127,14 +162,21 @@ bool game_open(Pos * pos){
         return false;
     }
 
-    cell->concealed = false;
     if(cell->containsBomb){
         currentBoard->gameFinish = true;
+
+#if OPEN_FIELD_AFTER_FINISH
+        for (uint32_t y = 0; y < currentBoard->ySize; ++y) {
+            for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
+                currentBoard->field[y][x].concealed = false;
+            }
+        }
+#endif
     }
 
-    if(cell->bombsAround == 0){
-        _openCellsInArea(pos);
-    }
+    _checkIfFirstPos(pos);
+
+    _openCellsInArea(pos);
 
     _checkWon();
 
@@ -143,16 +185,19 @@ bool game_open(Pos * pos){
 
 
 void game_capitulation(){
-    if(currentBoard == null){return;}
+    if(currentBoard == null) return;
 
     currentBoard->gameFinish = true;
 }
 
 
-void game_print(){
-    currentBoard->print(currentBoard);  //todo: debug
-}
+void destroyBoard(){
+    if(currentBoard == null) return;
 
+    nonNull(currentBoard);
+    currentBoard->free(currentBoard);
+    currentBoard = null;
+}
 
 //todo: Return of the game states
 

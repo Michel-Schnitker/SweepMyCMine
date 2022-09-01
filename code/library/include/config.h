@@ -4,8 +4,8 @@
 
 #define BOARD_MAXSIZE_X 90
 #define BOARD_MAXSIZE_Y 90
-#define BOARD_MINSIZE_X 2
-#define BOARD_MINSIZE_Y 2
+#define BOARD_MINSIZE_X 4
+#define BOARD_MINSIZE_Y 4
 
 #define BOARD_SIGN_MARKASBOMB "P"
 #define BOARD_SIGN_CONCEALED "?"
@@ -13,5 +13,7 @@
 
 #define DEBUGMODE false
 
+#define OPEN_FIELD_AFTER_FINISH true
+#define START_WITH_FIRST_SAFE_POS false
 
 #endif  // CONFIG_H_

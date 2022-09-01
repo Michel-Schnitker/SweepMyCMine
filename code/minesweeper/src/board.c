@@ -110,8 +110,25 @@ void placeRandomBombs(Board * newBoard, uint32_t bombs, Pos * bombproofPos){
     }
 
     if(bombproofPos != null){
-        places->remove(places,bombproofPos,(void*)(void*)bombproofPos->compare,(void*)(void*)bombproofPos->free);
+
+        int32_t lowerX = bombproofPos->x -1, upperX = bombproofPos->x +1;
+        int32_t lowerY = bombproofPos->y -1, upperY = bombproofPos->y +1;
+
+        for (int32_t y = lowerY; y <= upperY; ++y) {
+            for (int32_t x = lowerX; x <= upperX; ++x) {
+
+                if(_isPosValid(newBoard, x, y)){
+
+                    Pos newPos = {.x = x, .y = y};
+
+                    places->remove(places,&newPos,(void*)(void*) comparePos,(void*)(void*) freePos);
+                }
+            }
+        }
+
     }
+
+    assert(bombs < places->size);
 
     while (bombs-- > 0){
         currentPos = places->popIndex(places, getRandomInRange(0, places->size -1));
@@ -121,7 +138,7 @@ void placeRandomBombs(Board * newBoard, uint32_t bombs, Pos * bombproofPos){
     }
 
     //todo: including the free function via the "object" is not that pretty
-    places->delete(places, free);
+    places->delete(places, (void*)freePos);
 }
 
 Board * createBoard(uint32_t xSize, uint32_t ySize){

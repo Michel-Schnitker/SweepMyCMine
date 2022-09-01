@@ -19,8 +19,8 @@ void printPos(Pos *pos){
     //todo:
 }
 
-int comparePos(Pos *posOne, Pos *posTwo){
-    return (int)(posOne->x == posTwo->x and posOne->y == posTwo->y);
+bool comparePos(Pos *posOne, Pos *posTwo){
+    return (posOne->x == posTwo->x and posOne->y == posTwo->y);
 }
 
 Pos * new_Pos(int32_t x, int32_t y){

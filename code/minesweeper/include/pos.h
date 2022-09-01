@@ -11,9 +11,13 @@ typedef struct Pos {
     void (*free)(struct Pos *pos);
     void *(*clone)(struct Pos *pos);
     void (*print)(struct Pos *pos);
-    int (*compare)(struct Pos *posOne, struct Pos *posTwo);
+    bool (*compare)(struct Pos *posOne, struct Pos *posTwo);
 } Pos;
 
 Pos * new_Pos(int32_t x, int32_t y);
+
+void freePos(Pos *pos);
+
+bool comparePos(Pos *posOne, Pos *posTwo);
 
 #endif  // POS_H_

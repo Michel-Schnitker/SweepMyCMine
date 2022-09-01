@@ -1,12 +1,18 @@
+#include <stdlib.h>
+
 #include "game.h"
 #include "event.h"
 #include "config.h"
 
-static Board * currentBoard;
+static Board * currentBoard = null;
 
 void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
     if(not checkConstructParameter(xSize, ySize, bombs)){ return;}
+
+    if(currentBoard != null){
+        currentBoard->free(currentBoard);
+    }
 
     //todo: check if xSize, ySize and bombs is valid
     currentBoard = constructFullyRandomBoard(xSize, ySize, bombs);
@@ -29,6 +35,11 @@ bool game_startThis(Board *board){
     //todo: check if *board is valid. if not return false;
 
     //todo: copy board for security
+
+    if(currentBoard != null){
+        currentBoard->free(currentBoard);
+    }
+
     currentBoard = board;
 
 
@@ -108,19 +119,6 @@ void _openCellsInArea(Pos * pos){
 }
 
 
-bool game_mark(Pos * pos){
-    if(not _checkBeforeMove(pos)){
-        return false;
-    }
-
-    Cell *cell = &(currentBoard->field[pos->y][pos->x]);
-    cell->markedAsBomb = (cell->markedAsBomb) ? false : true;
-    currentBoard->bombMarkers += (cell->markedAsBomb) ? 1 : -1;
-
-    return true;
-}
-
-
 void _checkIfFirstPos(Pos *pos){
     if(currentBoard->gameStarted){
         return;
@@ -129,7 +127,7 @@ void _checkIfFirstPos(Pos *pos){
 
 
 #if START_WITH_FIRST_SAFE_POS
-    if(currentBoard->gameFinish or currentBoard->field[pos->y][pos->x].bombsAround != 0){
+    if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].concealed and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
 
         uint32_t x = currentBoard->xSize, y = currentBoard->ySize, bombs = currentBoard->bombs;
         currentBoard->free(currentBoard);
@@ -144,6 +142,23 @@ void _checkIfFirstPos(Pos *pos){
 
     currentBoard->gameStarted = true;
 }
+
+
+bool game_mark(Pos * pos){
+    if(not _checkBeforeMove(pos)){
+        return false;
+    }
+
+    Cell *cell = &(currentBoard->field[pos->y][pos->x]);
+    cell->markedAsBomb = (cell->markedAsBomb) ? false : true;
+    currentBoard->bombMarkers += (cell->markedAsBomb) ? 1 : -1;
+    _checkIfFirstPos(pos);
+
+    return true;
+}
+
+
+
 
 
 bool game_open(Pos * pos){
@@ -169,8 +184,12 @@ bool game_open(Pos * pos){
         for (uint32_t y = 0; y < currentBoard->ySize; ++y) {
             for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
                 currentBoard->field[y][x].concealed = false;
+                currentBoard->openCells++;
             }
         }
+#else
+        cell->concealed = false;
+        currentBoard->openCells++;
 #endif
     }
 
@@ -201,4 +220,65 @@ void destroyBoard(){
 
 //todo: Return of the game states
 
-//todo: return of the current game field (concealed)
+void freeGameBoard(GameBoard *gameBoard){
+    for (uint32_t i = 0; i < gameBoard->ySize; ++i) {
+        free(gameBoard->field[i]);
+    }
+    free(gameBoard->field);
+    free(gameBoard);
+}
+
+enum CellState ** translateField(){
+    enum CellState ** field = (enum CellState **) calloc(currentBoard->ySize, sizeof(enum CellState *));
+    nonNull(field);
+
+    for (uint32_t i = 0; i < currentBoard->ySize; ++i) {
+        field[i] = (enum CellState *) calloc(currentBoard->xSize, sizeof(enum CellState));
+    }
+
+    for (uint32_t y = 0; y < currentBoard->ySize; ++y) {
+        for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
+
+            if(currentBoard->field[y][x].markedAsBomb){
+                field[y][x] = CELL_MARKED_AS_BOMB;
+                continue;
+            }
+
+            if(currentBoard->field[y][x].concealed){
+                field[y][x] = CELL_CONCEALED;
+                continue;
+            }
+
+            if(currentBoard->field[y][x].containsBomb){
+                field[y][x] = CELL_BOMB_INSIDE;
+                continue;
+            }
+
+            field[y][x] = (enum CellState) currentBoard->field[y][x].bombsAround;
+        }
+    }
+
+    return field;
+}
+
+GameBoard * getGameBoard(){
+    GameBoard *newGameBoard = calloc(1, sizeof(GameBoard));
+    nonNull(newGameBoard);
+
+    newGameBoard->xSize = currentBoard->xSize;
+    newGameBoard->ySize = currentBoard->ySize;
+    newGameBoard->cellsToBeFound = currentBoard->bombs - currentBoard->bombMarkers;
+
+    newGameBoard->field = translateField();
+
+    newGameBoard->gameStarted = currentBoard->gameStarted;
+    newGameBoard->gameFinish = currentBoard->gameFinish;
+    newGameBoard->gameWon = currentBoard->gameWon;
+
+    newGameBoard->free = freeGameBoard;
+
+    return newGameBoard;
+}
+
+
+

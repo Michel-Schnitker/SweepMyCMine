@@ -41,7 +41,7 @@ void FullyRandomTest(){
 
     print_info("    Running fully random board construct test ...");
 
-    Board *testBoard = constructFullyRandomBoard(2,2,2);
+    Board *testBoard = constructFullyRandomBoard(4,5,2);
 
     TestCounter counter;
     _countingField(testBoard, &counter);
@@ -49,13 +49,13 @@ void FullyRandomTest(){
     nonNull(testBoard->free);
     nonNull(testBoard->print);
 
-    assert(testBoard->xSize == 2 and testBoard->ySize == 2 and testBoard->bombs == 2);
+    assert(testBoard->xSize == 4 and testBoard->ySize == 5 and testBoard->bombs == 2);
     assert(testBoard->openCells == 0 and testBoard->bombMarkers == 0);
     assert(not testBoard->gameStarted and not testBoard->gameFinish and not testBoard->gameWon);
 
-    assert(counter.bombsInArea == 4);
+    assert(counter.bombsInArea >= 6);
     assert(counter.bombs == 2);
-    assert(counter.concealed == 4);
+    assert(counter.concealed == 20);
     assert(counter.marked == 0);
 
     //todo: extend test

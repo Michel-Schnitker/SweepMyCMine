@@ -60,7 +60,7 @@ bool _checkBeforeMove(Pos * pos){
         return false;
     }
 
-    if(not isPosValid(currentBoard, pos)){
+    if(not currentBoard->validPos(currentBoard, pos)){
         print_error("Try a Move with an invalid position.");
         return false;
     }
@@ -80,7 +80,7 @@ void _checkWon(){
 
 void _openCellsInArea(Pos * pos){
 
-    if(isPosValid(currentBoard, pos) and currentBoard->field[pos->y][pos->x].concealed){
+    if(currentBoard->validPos(currentBoard, pos) and currentBoard->field[pos->y][pos->x].concealed){
         currentBoard->field[pos->y][pos->x].concealed = false;
         currentBoard->openCells++;
     }
@@ -101,7 +101,7 @@ void _openCellsInArea(Pos * pos){
                     .y = y,
             };
 
-            if(isPosValid(currentBoard,&newPos) and currentBoard->field[y][x].concealed){
+            if(currentBoard->validPos(currentBoard,&newPos) and currentBoard->field[y][x].concealed){
 
                 if(currentBoard->field[y][x].bombsAround == 0){
                     _openCellsInArea(&newPos);
@@ -150,6 +150,12 @@ bool game_mark(Pos * pos){
     }
 
     Cell *cell = &(currentBoard->field[pos->y][pos->x]);
+
+    if(not cell->concealed){
+        print_warning("Try to mark a already open cell.");
+        return false;
+    }
+
     cell->markedAsBomb = (cell->markedAsBomb) ? false : true;
     currentBoard->bombMarkers += (cell->markedAsBomb) ? 1 : -1;
     _checkIfFirstPos(pos);
@@ -261,6 +267,13 @@ enum CellState ** translateField(){
     return field;
 }
 
+bool isValidPosOnGameBoard(Pos *pos){
+    return pos->x >= 0 and
+           pos->y >= 0 and
+           pos->x < (int32_t) currentBoard->xSize and
+           pos->y < (int32_t) currentBoard->ySize;
+}
+
 GameBoard * getGameBoard(){
     GameBoard *newGameBoard = calloc(1, sizeof(GameBoard));
     nonNull(newGameBoard);
@@ -276,6 +289,7 @@ GameBoard * getGameBoard(){
     newGameBoard->gameWon = currentBoard->gameWon;
 
     newGameBoard->free = freeGameBoard;
+    newGameBoard->validPos = isValidPosOnGameBoard;
 
     return newGameBoard;
 }

@@ -152,6 +152,7 @@ Board * createBoard(uint32_t xSize, uint32_t ySize){
 
     newBoard->free = freeBoard;
     newBoard->print = printBoard;
+    newBoard->validPos = isPosValid;
 
     return newBoard;
 }

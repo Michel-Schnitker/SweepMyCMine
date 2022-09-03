@@ -35,6 +35,7 @@ typedef struct GameBoard {
     bool gameWon;
 
     void (*free)(struct GameBoard *gameBoard);
+    bool (*validPos)(struct Pos *pos);
 } GameBoard;
 
 void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs);

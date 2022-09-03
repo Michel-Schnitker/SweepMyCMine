@@ -29,9 +29,8 @@ typedef struct Board {
 
     void (*free)(struct Board *board);
     void (*print)(struct Board *board);
+    bool (*validPos)(struct Board *board, struct Pos *pos);
 } Board;
-
-bool isPosValid(Board * board, Pos *pos);
 
 bool checkConstructParameter(uint32_t xSize, uint32_t ySize, uint32_t bombs);
 

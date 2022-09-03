@@ -89,18 +89,28 @@ void gameOpenTest(){
 
     print_info("    Running Tests for open a Pos ...");
 
+#if START_WITH_FIRST_SAFE_POS
+    // FirstPos is required so that the playing field is not recreated with mode FIRST_SAFE_POS. Otherwise the locations of the bombs would be unknown.
+    Pos randomPos = {.x = 2, .y = 3};
+    Board *board = constructRandBoardWithBombproofPos(5,5,13,&randomPos);
+    Cell *randomCell = &(board->field[randomPos.x][randomPos.y]);
+
+#else
     Board *board = constructFullyRandomBoard(5,5,13);
+
+    int32_t randomX = getRandomInRange(0,board->xSize-1), randomY = getRandomInRange(0,board->ySize-1);
+
+    Cell *randomCell = &(board->field[randomY][randomX]);
+    Pos randomPos = {.x = randomX, .y = randomY};
+
+#endif
+
     game_startThis(board);
 
     assert(board->gameFinish == false);
     assert(board->gameStarted == false);
     assert(board->openCells == 0);
     assert(board->xSize == 5 and board->ySize == 5 and board->bombs == 13);
-
-    int32_t randomX = getRandomInRange(0,board->xSize-1), randomY = getRandomInRange(0,board->ySize-1);
-
-    Cell *randomCell = &(board->field[randomY][randomX]);
-    Pos randomPos = {.x = randomX, .y = randomY};
 
     disableEvent(EVENT_INFO);
     assert(randomCell->concealed);
@@ -235,4 +245,6 @@ void gameTest(){
     destroyBoardTest();
     getGameBoardMarkTest();
     getGameBoardOpenTest();
+
+    destroyBoard();
 }

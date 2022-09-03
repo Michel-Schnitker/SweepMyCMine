@@ -1,8 +1,7 @@
-//
-// Created by michel on 02.09.22.
-//
 
-#ifndef SWEEPMYCMINECLION_SIMPLETUI_H
-#define SWEEPMYCMINECLION_SIMPLETUI_H
+#ifndef SIMPLETUI_H_
+#define SIMPLETUI_H_
 
-#endif //SWEEPMYCMINECLION_SIMPLETUI_H
+void simpleNcurseTui();
+
+#endif //SIMPLETUI_H_

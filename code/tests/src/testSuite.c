@@ -4,6 +4,7 @@
 #include "listTest.h"
 #include "randomTest.h"
 #include "gameTest.h"
+#include "tuiTest.h"
 
 void runAllTests(){
     posTest();
@@ -11,4 +12,5 @@ void runAllTests(){
     randomTest();
     boardTest();
     gameTest();
+    tuiTest();
 }

@@ -1,8 +1,9 @@
-//
-// Created by michel on 03.09.22.
-//
 
-#ifndef SWEEPMYCMINECLION_TUITEST_H
-#define SWEEPMYCMINECLION_TUITEST_H
+#ifndef TUITEST_H_
+#define TUITEST_H_
 
-#endif //SWEEPMYCMINECLION_TUITEST_H
+#include "types.h"
+
+void tuiTest();
+
+#endif //TUITEST_H_

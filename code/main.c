@@ -11,6 +11,7 @@
 #include "pos.h" //todo: delete
 #include "game.h"
 
+#include "simpleTui.h"
 
 int main(int argc, char *argv[]) {
 
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
     printf("\nhello World\n");
 
 
-
+    simpleNcurseTui();
 
 
 
@@ -50,5 +51,5 @@ int main(int argc, char *argv[]) {
 //    Pos *p = new_Pos(1,2);
 //    p->free(p);
 
-
+    return SUCCESS;
 }

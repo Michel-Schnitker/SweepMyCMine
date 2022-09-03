@@ -4,4 +4,5 @@
 
 make clean
 make
+strip sweepMyCMine
 make run

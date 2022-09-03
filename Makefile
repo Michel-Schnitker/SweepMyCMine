@@ -1,5 +1,5 @@
 #CFLAGS = -g -Wextra -Wall -Wno-long-long -pedantic-errors
-CFLAGS = -g -Wextra -Wall
+CFLAGS = -g -Wextra -Wall -O3
 STANDART = -std=c99
 TARGET = sweepMyCMine
 

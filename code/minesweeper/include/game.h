@@ -26,7 +26,7 @@ enum CellState {
 typedef struct GameBoard {
     uint32_t xSize;
     uint32_t ySize;
-    uint32_t cellsToBeFound;
+    int32_t cellsToBeFound;
 
     enum CellState ** field;
 

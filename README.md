@@ -21,7 +21,7 @@
 | t-07 | 2 | refactoring and automatic formatting |
 | t-08 | 3 | implement greedy solver |
 | t-09 | 3 | implement linear solver |
-| t-10 | 4 | implement Benchmarksystem for diferent solver |
+| t-10 | 4 | implement Benchmarksystem for different solver |
 | t-11 | 4 | design a more comprehensive TUI with windows and mouseinteraction (expand TUI) |
 
 
@@ -43,21 +43,13 @@
 
 ### Mode: simple TUI
 
-> ![simpleStart](/doku/images/simpleTui_start.png)
+>
+| ![simpleStart](/doku/images/simpleTui_start.png) | ![simpleOpen](/doku/images/simpleTui_open.png) |
+| ---- |
+| ![simpleMark](/doku/images/simpleTui_mark.png) | ![simpleLose](/doku/images/simpleTui_lose.png) |
 
 >	todo
 
-> ![simpleOpen](/doku/images/simpleTui_open.png)
-
->	todo
-
-> ![simpleMark](/doku/images/simpleTui_mark.png)
-
->	todo
-
-> ![simpleLose](/doku/images/simpleTui_lose.png)
-
->	todo
 
 ### Mode: expand TUI
 

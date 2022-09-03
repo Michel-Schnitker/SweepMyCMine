@@ -30,11 +30,11 @@ void setColors(){
 
 void horizontalBorder(uint32_t size){
     attron(COLOR_PAIR(COLOR_CONCEALED));
-    printw("+");
+    printw(" +");
     for (uint32_t x = 0; x < size*3; ++x) {
         printw("-");
     }
-    printw("+");
+    printw("+ ");
 }
 
 void printField(GameBoard *gameBoard){
@@ -49,7 +49,7 @@ void printField(GameBoard *gameBoard){
     for (uint32_t y = 0; y < gameBoard->ySize; ++y) {
 
         attron(COLOR_PAIR(COLOR_CONCEALED));
-        printw("|");
+        printw(" |");
         for (uint32_t x = 0; x < gameBoard->xSize; ++x) {
 
             attrset(A_NORMAL);
@@ -94,7 +94,7 @@ void printField(GameBoard *gameBoard){
 
         }
         attron(COLOR_PAIR(COLOR_CONCEALED));
-        printw("|");
+        printw("| ");
         move(++row,col);
 
     }
@@ -102,7 +102,7 @@ void printField(GameBoard *gameBoard){
     horizontalBorder(gameBoard->xSize);
     move(++row,col);
     move(++row,col);
-    printw("(q) -> quit | (e) -> open | (w) -> mark | Arrows to navigate");
+    printw("(q) -> quit | (e) -> open | (w) -> mark | Arrows to navigate | Missing Bombs: %i", gameBoard->cellsToBeFound);
 }
 
 

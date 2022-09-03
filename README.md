@@ -43,11 +43,10 @@
 
 ### Mode: simple TUI
 
+>| ![simpleStart](/doku/images/simpleTui_start.png) | ![simpleOpen](/doku/images/simpleTui_open.png) |
+>| :----: | :----: |
+>| ![simpleMark](/doku/images/simpleTui_mark.png) | ![simpleLose](/doku/images/simpleTui_lose.png) |
 >
-| ![simpleStart](/doku/images/simpleTui_start.png) | ![simpleOpen](/doku/images/simpleTui_open.png) |
-| ---- |
-| ![simpleMark](/doku/images/simpleTui_mark.png) | ![simpleLose](/doku/images/simpleTui_lose.png) |
-
 >	todo
 
 

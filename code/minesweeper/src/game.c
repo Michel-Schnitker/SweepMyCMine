@@ -125,10 +125,12 @@ void _checkIfFirstPos(Pos *pos){
     }
     nonNull(pos);
 
-
+//    print_debug("check first pos");
 #if START_WITH_FIRST_SAFE_POS
-    if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].concealed and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
-
+//    if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].concealed and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
+    if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].markedAsBomb and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
+    //if(currentBoard->gameFinish or currentBoard->field[pos->y][pos->x].bombsAround != 0){
+//        print_debug("recreate board becuase of first safePos");
         uint32_t x = currentBoard->xSize, y = currentBoard->ySize, bombs = currentBoard->bombs;
         currentBoard->free(currentBoard);
         currentBoard = constructRandBoardWithBombproofPos(x,
@@ -158,7 +160,7 @@ bool game_mark(Pos * pos){
 
     cell->markedAsBomb = (cell->markedAsBomb) ? false : true;
     currentBoard->bombMarkers += (cell->markedAsBomb) ? 1 : -1;
-    _checkIfFirstPos(pos);
+//    _checkIfFirstPos(pos);
 
     return true;
 }
@@ -190,9 +192,9 @@ bool game_open(Pos * pos){
         for (uint32_t y = 0; y < currentBoard->ySize; ++y) {
             for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
                 currentBoard->field[y][x].concealed = false;
-                currentBoard->openCells++;
             }
         }
+        currentBoard->openCells = currentBoard->ySize * currentBoard->xSize;
 #else
         cell->concealed = false;
         currentBoard->openCells++;
@@ -246,7 +248,13 @@ enum CellState ** translateField(){
         for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
 
             if(currentBoard->field[y][x].markedAsBomb){
-                field[y][x] = CELL_MARKED_AS_BOMB;
+
+                if(not currentBoard->gameFinish or currentBoard->field[y][x].containsBomb){
+                    field[y][x] = CELL_MARKED_AS_BOMB;
+                }
+                else{
+                    field[y][x] = CELL_WRONG_MARK_AS_BOMB;
+                }
                 continue;
             }
 

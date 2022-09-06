@@ -16,7 +16,8 @@ enum ColorSet{
     COLOR_EMPTY = 2,
     COLOR_BOMB_IN_AREA = 3,
     COLOR_MARKED_AS_BOMB = 4,
-    COLOR_BOMB = 5,
+    COLOR_WRONG_MARKED_AS_BOMB = 5,
+    COLOR_BOMB = 6,
 };
 
 void setColors(){
@@ -25,6 +26,7 @@ void setColors(){
     init_pair(COLOR_EMPTY, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_BOMB_IN_AREA, COLOR_BLACK, COLOR_YELLOW);
     init_pair(COLOR_MARKED_AS_BOMB, COLOR_BLACK, COLOR_BLUE);
+    init_pair(COLOR_WRONG_MARKED_AS_BOMB, COLOR_BLACK, COLOR_MAGENTA);
     init_pair(COLOR_BOMB, COLOR_BLACK, COLOR_RED);
 }
 
@@ -81,6 +83,11 @@ void printField(GameBoard *gameBoard){
 
                 case CELL_MARKED_AS_BOMB:
                     attron(COLOR_PAIR(COLOR_MARKED_AS_BOMB));
+                    printw(" %s ", BOARD_SIGN_MARKASBOMB);
+                    break;
+
+                case CELL_WRONG_MARK_AS_BOMB:
+                    attron(COLOR_PAIR(COLOR_WRONG_MARKED_AS_BOMB));
                     printw(" %s ", BOARD_SIGN_MARKASBOMB);
                     break;
 

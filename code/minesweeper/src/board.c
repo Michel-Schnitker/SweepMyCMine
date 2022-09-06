@@ -160,9 +160,13 @@ Board * createBoard(uint32_t xSize, uint32_t ySize){
 bool checkConstructParameter(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
     return(xSize >= BOARD_MINSIZE_X and ySize >= BOARD_MINSIZE_Y and
-           xSize <= BOARD_MAXSIZE_X and ySize <= BOARD_MAXSIZE_Y and
-           bombs < xSize * ySize and
-           bombs > 0
+            xSize <= BOARD_MAXSIZE_X and ySize <= BOARD_MAXSIZE_Y and
+#if START_WITH_FIRST_SAFE_POS
+            bombs + 9 < xSize * ySize and
+#else
+            bombs < xSize * ySize and
+#endif
+            bombs > 0
     );
 }
 

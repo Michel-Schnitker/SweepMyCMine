@@ -21,6 +21,7 @@ enum CellState {
     CELL_BOMB_INSIDE = 9,
     CELL_CONCEALED = 10,
     CELL_MARKED_AS_BOMB = 11,
+    CELL_WRONG_MARK_AS_BOMB = 12,
 };
 
 typedef struct GameBoard {

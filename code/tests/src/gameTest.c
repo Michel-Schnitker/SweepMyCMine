@@ -77,7 +77,6 @@ void gameMarkTest(){
     assert(board->bombMarkers == 0);
     assert(not randomCell->markedAsBomb);
 
-    assert(board->gameStarted == true);
     assert(board->gameFinish == false);
     assert(board->gameWon == false);
     assert(board->openCells == 0);
@@ -185,7 +184,7 @@ void getGameBoardMarkTest(){
 
     assert(board->xSize == 9 and board->ySize == 10);
     assert(board->cellsToBeFound == 9);
-    assert(board->gameStarted == true and board->gameFinish == false and board->gameWon == false);
+    assert(board->gameFinish == false and board->gameWon == false);
     assert(board->free != null);
 
     game_mark(&randomPos);
@@ -195,7 +194,7 @@ void getGameBoardMarkTest(){
 
     assert(board->xSize == 9 and board->ySize == 10);
     assert(board->cellsToBeFound == 10);
-    assert(board->gameStarted == true and board->gameFinish == false and board->gameWon == false);
+    assert(board->gameFinish == false and board->gameWon == false);
     assert(board->free != null);
 
     board->free(board);

@@ -9,6 +9,7 @@
 
 
 #define null NULL
+#define ever (;;)
 
 #define not !
 #define and &&

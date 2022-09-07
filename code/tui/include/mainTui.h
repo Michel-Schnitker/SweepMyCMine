@@ -1,8 +1,7 @@
-//
-// Created by michel on 06.09.22.
-//
 
-#ifndef SWEEPMYCMINECLION_MAINTUI_H
-#define SWEEPMYCMINECLION_MAINTUI_H
+#ifndef MAINTUI_H_
+#define MAINTUI_H_
 
-#endif //SWEEPMYCMINECLION_MAINTUI_H
+void mainTui();
+
+#endif //MAINTUI_H_

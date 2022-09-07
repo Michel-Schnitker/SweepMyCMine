@@ -1,17 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ncurses.h>
 
 #include "types.h"
 #include "config.h"
 #include "testSuite.h"
 
 #include "event.h" //todo: delete
-#include "board.h" //todo: delete
-#include "pos.h" //todo: delete
-#include "game.h"
 
-#include "simpleTui.h"
+#include "mainTui.h"
 
 int main(int argc, char *argv[]) {
 
@@ -23,8 +19,7 @@ int main(int argc, char *argv[]) {
     printf("\nhello World\n");
 
 
-    simpleNcurseTui();
-
+    mainTui();
 
 
 //    print_success("print_success");

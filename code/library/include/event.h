@@ -1,3 +1,7 @@
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
 
 #ifndef EVENT_H_
 #define EVENT_H_

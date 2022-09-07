@@ -1,3 +1,7 @@
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
 
 #ifndef RANDOM_H_
 #define RANDOM_H_

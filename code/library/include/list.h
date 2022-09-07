@@ -1,3 +1,7 @@
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
 
 #ifndef LIST_H_
 #define LIST_H_

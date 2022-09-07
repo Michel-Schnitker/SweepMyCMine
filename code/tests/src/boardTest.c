@@ -1,3 +1,8 @@
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
+
 #include "boardTest.h"
 #include "board.h"
 #include "event.h"

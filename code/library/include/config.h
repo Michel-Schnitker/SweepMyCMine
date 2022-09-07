@@ -1,3 +1,7 @@
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
 
 #ifndef CONFIG_H_
 #define CONFIG_H_
@@ -18,6 +22,7 @@
 #define OPEN_FIELD_AFTER_FINISH true
 #define START_WITH_FIRST_SAFE_POS true
 #define ALL_BOMBS_FOUND_AREA_HELPER false // todo: implement
+#define NON_FLAGGING // todo: implement
 
 #define SIMPLE_TUI_XSIZE_DEFAULT 24
 #define SIMPLE_TUI_YSIZE_DEFAULT 20

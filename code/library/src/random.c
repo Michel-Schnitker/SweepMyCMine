@@ -1,3 +1,8 @@
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
+
 #include "random.h"
 
 static bool randomInitialized = false;

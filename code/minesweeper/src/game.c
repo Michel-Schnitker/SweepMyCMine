@@ -214,6 +214,8 @@ bool game_open(Pos * pos){
 void game_capitulation(){
     if(currentBoard == null) return;
 
+    //todo: if open board after finish is aktiv ... open all cells
+
     currentBoard->gameFinish = true;
 }
 
@@ -283,6 +285,10 @@ bool isValidPosOnGameBoard(Pos *pos){
 }
 
 GameBoard * getGameBoard(){
+    if(currentBoard == null){
+        return null;
+    }
+
     GameBoard *newGameBoard = calloc(1, sizeof(GameBoard));
     nonNull(newGameBoard);
 

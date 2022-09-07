@@ -89,11 +89,20 @@ void mainTui(){
         if(key == ESCAPE) break;
 
         if(key == OPEN_MENU){
+            werase(statusbar);
+            drawMenuStatusbar(statusbar, MENU_BAR_START_COL);
+            wrefresh(statusbar);
+
             WINDOW **menuItems=drawDropDownMenu(MENU_BAR_START_COL, 1);
             int32_t selectedMenuEntry = handleDropDownMenu(menuItems);
             deleteDropDownMenu(menuItems);
 
             //todo: switch to selected Menu entry
+            werase(statusbar);
+            //todo: update the appropriate status bar for the open window
+            drawGameStatusbar(statusbar, MENU_BAR_START_COL);
+            wrefresh(statusbar);
+
 
             touchwin(stdscr);
         }

@@ -1,5 +1,7 @@
 # SweepMyCMine
 
+![simpleLose](/doku/images/simpleTui_lose.png)
+
 ## What is SweepMyCMine
 
 > todo
@@ -39,20 +41,15 @@
 
 ### choose your game parameters
 
-> text
+> todo
 
-### Mode: simple TUI
+### TUI
 
 >| ![simpleStart](/doku/images/simpleTui_start.png) | ![simpleOpen](/doku/images/simpleTui_open.png) |
 >| :----: | :----: |
 >| ![simpleMark](/doku/images/simpleTui_mark.png) | ![simpleLose](/doku/images/simpleTui_lose.png) |
 >
 >	todo
-
-
-### Mode: expand TUI
-
-> todo
 
 ## License
 

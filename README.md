@@ -53,4 +53,4 @@
 
 ## License
 
-> todo license
+> [MIT](./LICENSE) © Michel-Schnitker

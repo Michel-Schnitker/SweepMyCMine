@@ -89,6 +89,42 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
 
         wmove(gameWindow,++row,col);
     }
+    wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
+    wmove(gameWindow,++row,col);
+    wprintw(gameWindow, "Missing Bombs :%03i ", gameBoard->cellsToBeFound);
+    col += ((SIMPLE_TUI_XSIZE_DEFAULT*3)-12);
+    wmove(gameWindow,row,col);
+    wprintw(gameWindow, "Seconds :%03li ", gameBoard->runtime);
+
+    if(gameBoard->gameFinish){
+        wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
+        row = (windowRow-5) /2, col = (windowCol-18) /2;
+
+        wmove(gameWindow,row,col);
+        wprintw(gameWindow, "                  ");
+        wmove(gameWindow,++row,col);
+        wprintw(gameWindow, "                  ");
+        wmove(gameWindow,++row,col);
+        wprintw(gameWindow, "    ");
+
+        if(gameBoard->gameWon){
+            wattron(gameWindow,COLOR_PAIR(COLOR_CELL_CURSOR));
+            wprintw(gameWindow, " YOU  WIN ");
+        }
+        else{
+            wattron(gameWindow,COLOR_PAIR(COLOR_CELL_BOMB_INSIDE));
+            wprintw(gameWindow, " YOU LOSE ");
+        }
+
+        wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
+        wprintw(gameWindow, "    ");
+        wmove(gameWindow,++row,col);
+        wprintw(gameWindow, "                  ");
+        wmove(gameWindow,++row,col);
+        wprintw(gameWindow, "                  ");
+
+    }
+
 
 }
 

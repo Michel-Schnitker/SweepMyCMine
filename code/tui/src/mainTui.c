@@ -11,6 +11,10 @@
 #include "gameTui.h"
 #include "globalTui.h"
 #include "menuTui.h"
+#include "configTui.h"
+#include "highScoreTui.h"
+#include "eventTui.h"
+#include "tutorialTui.h"
 
 #include "event.h"
 #include "types.h"
@@ -22,7 +26,33 @@
 #define MENU_BAR_START_COL 2
 
 static uint32_t terminalRow = 0, terminalCol = 0;   // row = y, col = x
-static WINDOW *menubar, *statusbar, *gameWindow;
+static WINDOW *menubar, *statusbar, *mainWindow;
+
+
+static void (*drawMainWindow[NUM_OF_MENU_ENTRIES])(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) ={
+        [MENU_ENTRY_GAME] = drawGameWindow,
+        [MENU_ENTRY_CONFIG] = drawConfigWindow,
+        [MENU_ENTRY_HIGH_SCORE] = drawHighScoreWindow,// todo: test
+        [MENU_ENTRY_MESSAGES] = drawEventWindow,// todo: test
+        [MENU_ENTRY_TUTORIAL] = drawTutorialWindow,// todo: test
+};
+
+static void (*drawStatusWindow[NUM_OF_MENU_ENTRIES+1])(WINDOW *window, int startCol) ={
+        [MENU_ENTRY_GAME] = drawGameStatusbar,
+        [MENU_ENTRY_CONFIG] = drawConfigStatusbar,
+        [MENU_ENTRY_HIGH_SCORE] = drawHighScoreStatusbar,// todo: test
+        [MENU_ENTRY_MESSAGES] = drawEventStatusbar,// todo: test
+        [MENU_ENTRY_TUTORIAL] = drawTutorialStatusbar,  // todo: test
+        [NUM_OF_MENU_ENTRIES] = drawMenuStatusbar,
+};
+
+static void (*redirectInputToMainWindow[NUM_OF_MENU_ENTRIES])(int key) ={
+        [MENU_ENTRY_GAME] = redirectInputToGameWindow,
+        [MENU_ENTRY_CONFIG] = redirectInputToConfigWindow,
+        [MENU_ENTRY_HIGH_SCORE] = redirectInputToHighScoreWindow,// todo: test
+        [MENU_ENTRY_MESSAGES] = redirectInputToEventWindow,// todo: test
+        [MENU_ENTRY_TUTORIAL] = redirectInputToTutorialWindow,// todo: test
+};
 
 
 void setColors(){
@@ -42,7 +72,7 @@ void setColors(){
 
 void initTui(){
 
-    disableEvent(EVENT_SUCCESS | EVENT_INFO | EVENT_TRACE | EVENT_DEBUG | EVENT_WARNING | EVENT_ERROR | EVENT_FATAL);
+//    disableEvent(EVENT_SUCCESS | EVENT_INFO | EVENT_TRACE | EVENT_DEBUG | EVENT_WARNING | EVENT_ERROR | EVENT_FATAL);
 
     initscr();
     getmaxyx(stdscr,terminalRow,terminalCol);
@@ -54,11 +84,24 @@ void initTui(){
 }
 
 void closeTUI(){
-    delwin(gameWindow);
+    delwin(mainWindow);
     delwin(menubar);
     delwin(statusbar);
     endwin();
 }
+
+void refreshMainWindow(int windowNumber){
+    werase(mainWindow);
+    drawMainWindow[windowNumber](terminalRow-4, terminalCol-2, mainWindow);
+    wrefresh(mainWindow);
+}
+
+void refreshStatusWindow(int windowNumber){
+    werase(statusbar);
+    drawStatusWindow[windowNumber](statusbar, MENU_BAR_START_COL);
+    wrefresh(statusbar);
+}
+
 
 void mainTui(){
     initTui();
@@ -68,17 +111,18 @@ void mainTui(){
 
     menubar=subwin(stdscr,1,terminalCol,0,0);   //WINDOW *subwin(WINDOW *orig, int nlines, int ncols, int begin_y, int begin_x);
     statusbar=subwin(stdscr,1,terminalCol,terminalRow-1,0);
-    gameWindow= subwin(stdscr,terminalRow-4,terminalCol-2,2,1);
+    mainWindow= subwin(stdscr,terminalRow-4,terminalCol-2,2,1);
 
     drawUpperMenubar(menubar, MENU_BAR_START_COL);
-//    drawMenuStatusbar(statusbar, MENU_BAR_START_COL);
-    drawGameStatusbar(statusbar, MENU_BAR_START_COL);
+
 
     initNewGame();
-    drawGameWindow(terminalRow-4, terminalCol-2, gameWindow);
+    refreshMainWindow(MENU_ENTRY_GAME); // as the first window draw Game Window
+    refreshStatusWindow(MENU_ENTRY_GAME); // as the first window draw Game Window
 
 
     int key;
+    int currentWindow = MENU_ENTRY_GAME;
 
     for ever{
 
@@ -89,31 +133,27 @@ void mainTui(){
         if(key == ESCAPE) break;
 
         if(key == OPEN_MENU){
-            werase(statusbar);
-            drawMenuStatusbar(statusbar, MENU_BAR_START_COL);
-            wrefresh(statusbar);
+            refreshStatusWindow(NUM_OF_MENU_ENTRIES);
 
             WINDOW **menuItems=drawDropDownMenu(MENU_BAR_START_COL, 1);
             int32_t selectedMenuEntry = handleDropDownMenu(menuItems);
             deleteDropDownMenu(menuItems);
 
-            //todo: switch to selected Menu entry
-            werase(statusbar);
-            //todo: update the appropriate status bar for the open window
-            drawGameStatusbar(statusbar, MENU_BAR_START_COL);
-            wrefresh(statusbar);
+            //switch to selected Menu entry
+            if(selectedMenuEntry >= 0 and selectedMenuEntry < NUM_OF_MENU_ENTRIES){
+                currentWindow = selectedMenuEntry;
+                refreshMainWindow(currentWindow);
+            }
+
+            refreshStatusWindow(currentWindow);
 
 
             touchwin(stdscr);
         }
         else{
-            //todo: key transfer to open window (game, highscore, config)
-            //todo: refresh window
-            redirectInputToGameWindow(key);
 
-            drawGameWindow(terminalRow-4, terminalCol-2, gameWindow);
-
-            wrefresh(gameWindow);
+            redirectInputToMainWindow[currentWindow](key);
+            refreshMainWindow(currentWindow);
         }
 
     }

@@ -6,6 +6,7 @@
 #ifndef BOARD_H_
 #define BOARD_H_
 
+#include <time.h>
 
 #include "types.h"
 #include "pos.h"
@@ -30,6 +31,7 @@ typedef struct Board {
     bool gameStarted;
     bool gameFinish;
     bool gameWon;
+    time_t start;
 
     void (*free)(struct Board *board);
     void (*print)(struct Board *board);

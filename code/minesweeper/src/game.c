@@ -85,7 +85,7 @@ void _checkWon(){
 
 void _openCellsInArea(Pos * pos){
 
-    if(currentBoard->validPos(currentBoard, pos) and currentBoard->field[pos->y][pos->x].concealed){
+    if(currentBoard->validPos(currentBoard, pos) and currentBoard->field[pos->y][pos->x].concealed and not currentBoard->field[pos->y][pos->x].markedAsBomb){
         currentBoard->field[pos->y][pos->x].concealed = false;
         currentBoard->openCells++;
     }
@@ -106,7 +106,7 @@ void _openCellsInArea(Pos * pos){
                     .y = y,
             };
 
-            if(currentBoard->validPos(currentBoard,&newPos) and currentBoard->field[y][x].concealed){
+            if(currentBoard->validPos(currentBoard,&newPos) and currentBoard->field[y][x].concealed and not currentBoard->field[pos->y][pos->x].markedAsBomb){
 
                 if(currentBoard->field[y][x].bombsAround == 0){
                     _openCellsInArea(&newPos);
@@ -147,6 +147,7 @@ void _checkIfFirstPos(Pos *pos){
     }
 #endif
 
+    time(&(currentBoard->start));
     currentBoard->gameStarted = true;
 }
 
@@ -306,6 +307,17 @@ GameBoard * getGameBoard(){
     newGameBoard->gameStarted = currentBoard->gameStarted;
     newGameBoard->gameFinish = currentBoard->gameFinish;
     newGameBoard->gameWon = currentBoard->gameWon;
+
+    if(currentBoard->start == 0){
+        newGameBoard->runtime = 0;
+    }
+    else{
+        time_t now;
+        time(&now);
+        newGameBoard->runtime = now - currentBoard->start;
+        if(newGameBoard->runtime > 999) newGameBoard->runtime = 999;
+    }
+
 
     newGameBoard->free = freeGameBoard;
     newGameBoard->validPos = isValidPosOnGameBoard;

@@ -6,6 +6,8 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+#include <time.h>
+
 #include "types.h"
 #include "board.h"
 #include "pos.h"
@@ -38,6 +40,8 @@ typedef struct GameBoard {
     bool gameStarted;
     bool gameFinish;
     bool gameWon;
+
+    time_t runtime;
 
     void (*free)(struct GameBoard *gameBoard);
     bool (*validPos)(struct Pos *pos);

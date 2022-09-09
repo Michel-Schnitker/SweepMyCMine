@@ -29,7 +29,7 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
 
     assert(gameBoard != null);
 
-    uint32_t row = (windowRow-SIMPLE_TUI_YSIZE_DEFAULT) /2, col = (windowCol-(SIMPLE_TUI_XSIZE_DEFAULT*3)) /2;
+    uint32_t row = (windowRow-SIMPLE_TUI_YSIZE_DEFAULT-2) /2, col = (windowCol-(SIMPLE_TUI_XSIZE_DEFAULT*3)) /2;
 
     wmove(gameWindow,row,col);
     wbkgd(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
@@ -97,15 +97,9 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
     wprintw(gameWindow, "Seconds :%03li ", gameBoard->runtime);
 
     if(gameBoard->gameFinish){
-        wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
-        row = (windowRow-5) /2, col = (windowCol-18) /2;
 
+        col = (windowCol-10) /2;
         wmove(gameWindow,row,col);
-        wprintw(gameWindow, "                  ");
-        wmove(gameWindow,++row,col);
-        wprintw(gameWindow, "                  ");
-        wmove(gameWindow,++row,col);
-        wprintw(gameWindow, "    ");
 
         if(gameBoard->gameWon){
             wattron(gameWindow,COLOR_PAIR(COLOR_CELL_CURSOR));
@@ -115,17 +109,9 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
             wattron(gameWindow,COLOR_PAIR(COLOR_CELL_BOMB_INSIDE));
             wprintw(gameWindow, " YOU LOSE ");
         }
-
-        wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
-        wprintw(gameWindow, "    ");
-        wmove(gameWindow,++row,col);
-        wprintw(gameWindow, "                  ");
-        wmove(gameWindow,++row,col);
-        wprintw(gameWindow, "                  ");
-
     }
 
-
+    wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
 }
 
 void initNewGame(){

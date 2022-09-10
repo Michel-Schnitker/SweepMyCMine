@@ -32,26 +32,26 @@ static WINDOW *menubar, *statusbar, *mainWindow;
 static void (*drawMainWindow[NUM_OF_MENU_ENTRIES])(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) ={
         [MENU_ENTRY_GAME] = drawGameWindow,
         [MENU_ENTRY_CONFIG] = drawConfigWindow,
-        [MENU_ENTRY_HIGH_SCORE] = drawHighScoreWindow,// todo: test
-        [MENU_ENTRY_MESSAGES] = drawEventWindow,// todo: test
-        [MENU_ENTRY_TUTORIAL] = drawTutorialWindow,// todo: test
+        [MENU_ENTRY_HIGH_SCORE] = drawHighScoreWindow,
+        [MENU_ENTRY_MESSAGES] = drawEventWindow,
+        [MENU_ENTRY_TUTORIAL] = drawTutorialWindow,
 };
 
 static void (*drawStatusWindow[NUM_OF_MENU_ENTRIES+1])(WINDOW *window, int startCol) ={
         [MENU_ENTRY_GAME] = drawGameStatusbar,
         [MENU_ENTRY_CONFIG] = drawConfigStatusbar,
-        [MENU_ENTRY_HIGH_SCORE] = drawHighScoreStatusbar,// todo: test
-        [MENU_ENTRY_MESSAGES] = drawEventStatusbar,// todo: test
-        [MENU_ENTRY_TUTORIAL] = drawTutorialStatusbar,  // todo: test
+        [MENU_ENTRY_HIGH_SCORE] = drawHighScoreStatusbar,
+        [MENU_ENTRY_MESSAGES] = drawEventStatusbar,
+        [MENU_ENTRY_TUTORIAL] = drawTutorialStatusbar,
         [NUM_OF_MENU_ENTRIES] = drawMenuStatusbar,
 };
 
 static void (*redirectInputToMainWindow[NUM_OF_MENU_ENTRIES])(int key) ={
         [MENU_ENTRY_GAME] = redirectInputToGameWindow,
         [MENU_ENTRY_CONFIG] = redirectInputToConfigWindow,
-        [MENU_ENTRY_HIGH_SCORE] = redirectInputToHighScoreWindow,// todo: test
-        [MENU_ENTRY_MESSAGES] = redirectInputToEventWindow,// todo: test
-        [MENU_ENTRY_TUTORIAL] = redirectInputToTutorialWindow,// todo: test
+        [MENU_ENTRY_HIGH_SCORE] = redirectInputToHighScoreWindow,
+        [MENU_ENTRY_MESSAGES] = redirectInputToEventWindow,
+        [MENU_ENTRY_TUTORIAL] = redirectInputToTutorialWindow,
 };
 
 

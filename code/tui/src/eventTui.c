@@ -3,27 +3,62 @@
  * License:     MIT License
  */
 
+#include "string.h"
+
 #include "eventTui.h"
 
+#include "types.h"
 #include "globalTui.h"
+#include "event.h"
 
-static int lastInput;
 
 void drawEventWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
-    wmove(window,0,0);
+    (void) windowCol;
+
+    uint32_t row = (windowRow - getEventBufferSize()) / 2, col = 4;
+
+    wmove(window,row,col);
     wbkgd(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
 
+    EventElement *event = getEventMessageFromLog();
 
-    //todo: implement
+    if(event == null){
+        wprintw(window, "no messages available.");
+    }
 
+    while (event != null and row <= windowRow){
 
-    wprintw(window," MainWindow of Event, Input: %i", lastInput);
+        switch (event->level) {
+            case EVENT_SUCCESS:
+                wattron(window, COLOR_PAIR(COLOR_CELL_CURSOR));
+                break;
+            case EVENT_TRACE:
+            case EVENT_DEBUG:
+                wattron(window,COLOR_PAIR(COLOR_CELL_MARKED_AS_BOMB));
+                break;
+            case EVENT_WARNING:
+                wattron(window,COLOR_PAIR(COLOR_CELL_BOMB_IN_AREA));
+                break;
+            case EVENT_ERROR:
+            case EVENT_FATAL:
+                wattron(window,COLOR_PAIR(COLOR_CELL_WRONG_MARKED_AS_BOMB));
+                break;
+            case EVENT_INFO:
+            default:
+                wattron(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
+                break;
+        }
+
+        wprintw(window, "%s %s %s", event->metaString, event->pathString, event->messageString);
+        wmove(window,++row,col);
+        event = getEventMessageFromLog();
+    }
+
+    wattron(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
 }
 
 void redirectInputToEventWindow(int key){
-    lastInput = key;
-
-    //todo: implement
+    (void) key;
 
 }
 
@@ -31,9 +66,4 @@ void drawEventStatusbar(WINDOW *window, int startCol){
     wmove(window,0, startCol);
     wbkgd(window,COLOR_PAIR(COLOR_MAIN_MENU));
 
-
-    //todo: implement
-
-
-    waddstr(window," Statusbar of Event ");
 }

@@ -10,21 +10,23 @@
 #include "config.h"
 #include "testSuite.h"
 
-#include "event.h" //todo: delete
+#include "event.h"
 
 #include "mainTui.h"
 
 int main(int argc, char *argv[]) {
 
     assert(argc == 1);
+
+    startEventLogging(DIREKT_PRINT);
+
     runAllTests();
 
-
-
-    printf("\nhello World\n");
-
+    startEventLogging(USE_LOG_BUFFER | PRINT_TO_FILE);
 
     mainTui();
+
+    stopEventLogging();
 
 
 //    print_success("print_success");

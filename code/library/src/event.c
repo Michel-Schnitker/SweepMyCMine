@@ -5,6 +5,14 @@
 
 #include "event.h"
 
+
+#include "stdlib.h"
+#include "string.h"
+
+#include "config.h"
+#include "types.h"
+#include "list.h"
+
 #define COUNT_LEVELS 7
 
 static const char *level_strings[] = {
@@ -41,70 +49,177 @@ static bool levelEnable[NUM_OF_LEVELS] = {
         [EVENT_FATAL] = EVENT_FATAL_ENABLE_DEFAULT,
 };
 
-static void printEventElement(eventElement *event) {
-    char timeStamp[16];
-    timeStamp[strftime(timeStamp, sizeof(timeStamp), "%H:%M:%S", event->time)] = '\0';
 
-#if EVENT_COLORING
+EventElement *new_EventElem(){
+    EventElement *event = calloc(1, sizeof(EventElement) );
+    event->metaString = calloc(EVENT_MESSAGE_LENGTH_META + 1, sizeof(char) );
+    event->pathString = calloc(EVENT_MESSAGE_LENGTH_PATH + 1, sizeof(char) );
+    event->messageString = calloc(EVENT_MESSAGE_LENGTH_MSG + 1, sizeof(char) );
 
-    fprintf(
-            event->udata,
-            "%s%-7s %s\x1b[0m \x1b[90m%s:%d -> %s() :\x1b[0m ",
-            level_colors[event->level],
-            level_strings[event->level],
-            timeStamp,
-            event->file,
-            event->line,
-            event->func);
+    return event;
+}
 
-    fprintf(event->udata, "%s",level_colors[event->level]);
-#else
-
-    fprintf(
-            event->udata,
-            "%-7s %s  %s:%d -> %s() : ",
-            level_strings[event->level],
-            timeStamp,
-            event->file,
-            event->line,
-            event->func);
-
-#endif
-
-    vfprintf(event->udata, event->fmt, event->ap);
-
-#if EVENT_COLORING
-    fprintf(event->udata, "\x1b[0m");
-#endif
-
-    fprintf(event->udata, "\n");
-    fflush(event->udata);
+void freeEventElem(EventElement *event){
+    free(event->metaString);
+    free(event->pathString);
+    free(event->messageString);
+    free(event);
 }
 
 
-void printEvent(int level, const char *file, int line, const char *func, const char *fmt, ...) {
+static void *eventPrintOut = null;
+static FILE *eventFileOut = null;
+
+static List *eventBufferList = null;
+static uint32_t messageBufferReturnCounter = 0;
+
+void stopEventLogging(){
+
+    eventPrintOut = null;
+
+    if(eventFileOut != null) fclose(eventFileOut);
+    eventFileOut = null;
+
+    if(eventBufferList != null) eventBufferList->delete(eventBufferList, (void*) freeEventElem);
+    eventBufferList = null;
+}
+
+void startEventLogging(enum loggingMode mode){
+
+    stopEventLogging();
+
+    if(mode & DIREKT_PRINT){
+
+        eventPrintOut = EVENT_STREAM;
+    }
+
+    if(mode & PRINT_TO_FILE){
+
+        eventFileOut = fopen(EVENT_LOGGING_PATH, "a+");
+        if (eventFileOut == null) print_fatal("Could not open file: %s", EVENT_LOGGING_PATH);
+    }
+
+    if(mode & USE_LOG_BUFFER){
+
+        eventBufferList = new_List();
+        messageBufferReturnCounter = 0;
+    }
+
+}
+
+EventElement* getEventMessageFromLog(){
+    if(eventBufferList == null) return null;
+
+    if(messageBufferReturnCounter >= eventBufferList->size){
+        messageBufferReturnCounter = 0;
+        return null;
+    }
+
+    EventElement* msg = eventBufferList->getIndex(eventBufferList, messageBufferReturnCounter);
+    messageBufferReturnCounter++;
+
+    return msg;
+}
+
+uint32_t getEventBufferSize(){
+    if(eventBufferList == null){
+        return 0;
+    }
+    else{
+        return eventBufferList->size;
+    }
+}
+
+
+void printEventToFile(FILE *stream, EventElement *event){
+
+#if EVENT_COLORING
+
+    fprintf(stream,
+            "%s%s\x1b[0m \x1b[90m%s :\x1b[0m %s%s \x1b[0m \n",
+            level_colors[event->level],
+            event->metaString,
+            event->pathString,
+            level_colors[event->level],
+            event->messageString);
+
+#else
+
+    fprintf(stream,
+            "%s %s : %s \n",
+            event->metaString,
+            event->pathString,
+            event->messageString);
+
+#endif
+
+    fflush(stream);
+}
+
+
+void printEvent(enum eventLevel level, const char *file, int line, const char *func, const char *fmt, ...) {
 
     if(not levelEnable[level]) return;
 
-    eventElement ev = {
-            .fmt   = fmt,
-            .file  = file,
-            .line  = line,
-            .func  = func,
-            .level = level,
-    };
 
-    if (!ev.time) {
-        time_t t = time(NULL);
-        ev.time = localtime(&t);
+    EventElement *event = new_EventElem();
+
+    event->level = level;
+
+    char timeStamp[16];
+    time_t t = time(null);
+    timeStamp[strftime(timeStamp, sizeof(timeStamp), "%H:%M:%S", localtime(&t))] = '\0';
+
+    snprintf(event->metaString,
+             EVENT_MESSAGE_LENGTH_META,
+             "%-7s %s ",
+             level_strings[event->level],
+             timeStamp);
+
+    snprintf(event->pathString,
+             EVENT_MESSAGE_LENGTH_PATH,
+             "%s:%d -> %s() ",
+             file,
+             line,
+             func);
+
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(event->messageString,
+              EVENT_MESSAGE_LENGTH_MSG,
+              fmt,
+              args);
+    va_end(args);
+
+
+    if(eventPrintOut != null){
+        printEventToFile(eventPrintOut, event);
     }
 
-    ev.udata = EVENT_STREAM;
+    if(eventFileOut != null){
+        printEventToFile(eventFileOut, event);
+    }
 
-    va_start(ev.ap, fmt);
-    printEventElement(&ev);
-    va_end(ev.ap);
+    if(eventBufferList != null){
+
+        messageBufferReturnCounter = 0;
+
+        if(eventBufferList->size >= EVENT_MAX_AMOUNT_LOGGING){
+            EventElement *oldMsg = eventBufferList->popFirst(eventBufferList);
+            freeEventElem(oldMsg);
+        }
+        eventBufferList->add(eventBufferList, event);
+    }
+    else{
+        freeEventElem(event);
+    }
+
+    if(level == EVENT_FATAL){
+        stopEventLogging();
+        UNREACHABLE;
+    }
 }
+
 
 void setEnableingForEvents(enum eventLevel level, bool req){
     for (int i = 0; i < COUNT_LEVELS; ++i) {

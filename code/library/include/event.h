@@ -10,10 +10,14 @@
 #include <time.h>
 #include <stdio.h>
 
+#include "config.h"
 #include "types.h"
 
 #define EVENT_COLORING true
 #define EVENT_STREAM stdout // stderr, stdout or file
+#define EVENT_MESSAGE_LENGTH_META 23
+#define EVENT_MESSAGE_LENGTH_PATH 149
+#define EVENT_MESSAGE_LENGTH_MSG 149
 
 #define EVENT_SUCCESS_ENABLE_DEFAULT true
 #define EVENT_INFO_ENABLE_DEFAULT true
@@ -23,21 +27,7 @@
 #define EVENT_ERROR_ENABLE_DEFAULT true
 #define EVENT_FATAL_ENABLE_DEFAULT true
 
-//todo: include Liste for Event-logging
-//todo:     -> enables log data export to a file
 //todo: make event thread safe
-//todo: define variable array for printing addon time and path
-
-typedef struct {
-    va_list ap;
-    const char *fmt;
-    const char *file;
-    const char *func;
-    struct tm *time;
-    void *udata;
-    int line;
-    int level;
-} eventElement;
 
 enum eventLevel {
     EVENT_SUCCESS = (1<<0),
@@ -50,6 +40,27 @@ enum eventLevel {
     NUM_OF_LEVELS
 };
 
+typedef struct {
+    enum eventLevel level;
+    char *metaString;
+    char *pathString;
+    char *messageString;
+} EventElement;
+
+enum loggingMode {
+    DIREKT_PRINT = (1<<0),
+    PRINT_TO_FILE = (1<<1),
+    USE_LOG_BUFFER = (1<<2),
+};
+
+
+void startEventLogging(enum loggingMode mode);
+
+void stopEventLogging();
+
+EventElement* getEventMessageFromLog();
+
+uint32_t getEventBufferSize();
 
 
 #define print_success(...) printEvent(EVENT_SUCCESS, __FILE__, __LINE__, __func__, __VA_ARGS__)
@@ -61,7 +72,8 @@ enum eventLevel {
 #define print_fatal(...) printEvent(EVENT_FATAL, __FILE__, __LINE__, __func__, __VA_ARGS__)
 
 
-void printEvent(int level, const char *file, int line, const char *func, const char *fmt, ...);
+void printEvent(enum eventLevel level, const char *file, int line, const char *func, const char *fmt, ...);
+
 
 void enableEvent(enum eventLevel level);
 

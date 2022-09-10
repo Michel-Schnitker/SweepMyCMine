@@ -8,6 +8,7 @@
 #include "listTest.h"
 #include "randomTest.h"
 #include "gameTest.h"
+#include "eventTest.h"
 #include "tuiTest.h"
 
 void runAllTests(){
@@ -16,5 +17,6 @@ void runAllTests(){
     randomTest();
     boardTest();
     gameTest();
+    eventTest();
     tuiTest();
 }

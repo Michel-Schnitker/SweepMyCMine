@@ -1,8 +1,11 @@
-//
-// Created by michel on 09.09.22.
-//
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
 
-#ifndef SWEEPMYCMINECLION_EVENTTEST_H
-#define SWEEPMYCMINECLION_EVENTTEST_H
+#ifndef EVENTTEST_H_
+#define EVENTTEST_H_
 
-#endif //SWEEPMYCMINECLION_EVENTTEST_H
+void eventTest();
+
+#endif //EVENTTEST_H_

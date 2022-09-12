@@ -18,3 +18,7 @@ uint32_t getRandomInRange(uint32_t min, uint32_t max){
     if(not randomInitialized){ initializeRandom(time(0)); }
     return (rand() % (max - min + 1)) + min;
 }
+
+Pos *getRandomPosInRange(uint32_t minX, uint32_t maxX, uint32_t minY, uint32_t maxY){
+    return new_Pos(getRandomInRange(minX,maxX), getRandomInRange(minY, maxY));
+}

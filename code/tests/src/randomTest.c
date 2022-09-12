@@ -21,9 +21,24 @@ void inRangeTest(){
     print_success("         Passed");
 }
 
+void posInRangeTest(){
+
+    print_info("    Running Tests for random Pos in Range ...");
+
+    Pos *randomPos = getRandomPosInRange(3,4,7,8);
+
+    assert(randomPos->x == 3 or randomPos->x == 4);
+    assert(randomPos->y == 7 or randomPos->y == 8);
+
+    randomPos->free(randomPos);
+
+    print_success("         Passed");
+}
+
 void randomTest(){
 
     print_info("Running Tests for random.c");
 
     inRangeTest();
+    posInRangeTest();
 }

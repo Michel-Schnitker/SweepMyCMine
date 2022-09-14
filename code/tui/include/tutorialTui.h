@@ -14,4 +14,8 @@ void redirectInputToTutorialWindow(int key);
 
 void drawTutorialStatusbar(WINDOW *window, int startCol);
 
+void openTutorialWindow();
+
+void closeTutorialWindow();
+
 #endif //TUTORIALTUI_H_

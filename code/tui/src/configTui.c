@@ -37,3 +37,11 @@ void drawConfigStatusbar(WINDOW *window, int startCol){
 
     waddstr(window," Statusbar of Config ");
 }
+
+void openConfigWindow(){
+
+}
+
+void closeConfigWindow(){
+
+}

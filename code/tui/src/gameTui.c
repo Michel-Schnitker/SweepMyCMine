@@ -215,3 +215,11 @@ void drawGameStatusbar(WINDOW *window, int startCol){
     wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     waddstr(window," Move ");
 }
+
+void openGameWindow(){
+    initNewGame();
+}
+
+void closeGameWindow(){
+
+}

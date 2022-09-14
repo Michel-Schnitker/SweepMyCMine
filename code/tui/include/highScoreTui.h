@@ -14,4 +14,8 @@ void redirectInputToHighScoreWindow(int key);
 
 void drawHighScoreStatusbar(WINDOW *window, int startCol);
 
+void openHighScoreWindow();
+
+void closeHighScoreWindow();
+
 #endif //HIGHSCORETUI_H_

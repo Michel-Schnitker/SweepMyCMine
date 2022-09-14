@@ -37,3 +37,11 @@ void drawHighScoreStatusbar(WINDOW *window, int startCol){
 
     waddstr(window," Statusbar of HighScore ");
 }
+
+void openHighScoreWindow(){
+
+}
+
+void closeHighScoreWindow(){
+
+}

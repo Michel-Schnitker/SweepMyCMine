@@ -54,6 +54,21 @@ static void (*redirectInputToMainWindow[NUM_OF_MENU_ENTRIES])(int key) ={
         [MENU_ENTRY_TUTORIAL] = redirectInputToTutorialWindow,
 };
 
+static void (*openWindow[NUM_OF_MENU_ENTRIES])() ={
+        [MENU_ENTRY_GAME] = openGameWindow,
+        [MENU_ENTRY_CONFIG] = openConfigWindow,
+        [MENU_ENTRY_HIGH_SCORE] = openHighScoreWindow,
+        [MENU_ENTRY_MESSAGES] = openEventWindow,
+        [MENU_ENTRY_TUTORIAL] = openTutorialWindow,
+};
+
+static void (*closeWindow[NUM_OF_MENU_ENTRIES])() ={
+        [MENU_ENTRY_GAME] = closeGameWindow,
+        [MENU_ENTRY_CONFIG] = closeConfigWindow,
+        [MENU_ENTRY_HIGH_SCORE] = closeHighScoreWindow,
+        [MENU_ENTRY_MESSAGES] = closeEventWindow,
+        [MENU_ENTRY_TUTORIAL] = closeTutorialWindow,
+};
 
 void setColors(){
     start_color();
@@ -116,9 +131,9 @@ void mainTui(){
     drawUpperMenubar(menubar, MENU_BAR_START_COL);
 
 
-    initNewGame();
+    openWindow[MENU_ENTRY_GAME]();
     refreshMainWindow(MENU_ENTRY_GAME); // as the first window draw Game Window
-    refreshStatusWindow(MENU_ENTRY_GAME); // as the first window draw Game Window
+    refreshStatusWindow(MENU_ENTRY_GAME); // as the first Status draw Game Status
 
 
     int key;
@@ -141,6 +156,12 @@ void mainTui(){
 
             //switch to selected Menu entry
             if(selectedMenuEntry >= 0 and selectedMenuEntry < NUM_OF_MENU_ENTRIES){
+
+                if(currentWindow != selectedMenuEntry){
+                    closeWindow[currentWindow]();
+                    openWindow[selectedMenuEntry]();
+                }
+
                 currentWindow = selectedMenuEntry;
                 refreshMainWindow(currentWindow);
             }

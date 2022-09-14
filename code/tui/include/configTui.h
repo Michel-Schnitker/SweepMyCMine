@@ -14,4 +14,8 @@ void redirectInputToConfigWindow(int key);
 
 void drawConfigStatusbar(WINDOW *window, int startCol);
 
+void openConfigWindow();
+
+void closeConfigWindow();
+
 #endif //CONFIGTUI_H_

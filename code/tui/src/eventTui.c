@@ -66,4 +66,16 @@ void drawEventStatusbar(WINDOW *window, int startCol){
     wmove(window,0, startCol);
     wbkgd(window,COLOR_PAIR(COLOR_MAIN_MENU));
 
+    wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+    waddstr(window,"(Esc)");
+    wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+    waddstr(window," Quit ");
+}
+
+void openEventWindow(){
+
+}
+
+void closeEventWindow(){
+
 }

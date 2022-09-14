@@ -14,4 +14,8 @@ void redirectInputToEventWindow(int key);
 
 void drawEventStatusbar(WINDOW *window, int startCol);
 
+void openEventWindow();
+
+void closeEventWindow();
+
 #endif //EVENTTUI_H_

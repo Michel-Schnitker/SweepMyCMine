@@ -192,11 +192,18 @@ void *popFirst(List *list) {
 
 void clear(List *list, void (*deleteElemFunc)(void *payload)) {
     nonNull(list);
-    nonNull(deleteElemFunc);
 
-    for (uint32_t i = 0; i < list->size; ++i) {
-        deleteElemFunc(list->popFirst(list));
+    if(deleteElemFunc != null){
+        for (uint32_t i = 0; i < list->size; ++i) {
+            deleteElemFunc(list->popFirst(list));
+        }
     }
+    else{
+        for (uint32_t i = 0; i < list->size; ++i) {
+            list->popFirst(list);
+        }
+    }
+
 }
 
 
@@ -204,7 +211,7 @@ void delete(List *list, void (*deleteElemFunc)(void *payload)) {
     nonNull(list);
 
     if(list->size > 0){
-        nonNull(deleteElemFunc);    //todo: can be removed later as "clear" catches this error.
+
         list->clear(list, deleteElemFunc);
     }
     free(list);

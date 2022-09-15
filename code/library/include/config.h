@@ -37,7 +37,7 @@
 #define TUI_COLOR_FRONT_GAME_BOMB COLOR_RED
 #define TUI_COLOR_FRONT_GAME_CURSOR COLOR_GREEN
 
-#define EVENT_MAX_AMOUNT_LOGGING 10
+#define EVENT_MAX_AMOUNT_LOGGING 10 //todo search and fix the Bug
 #define EVENT_LOGGING_PATH "logging.txt"
 
 #endif  // CONFIG_H_

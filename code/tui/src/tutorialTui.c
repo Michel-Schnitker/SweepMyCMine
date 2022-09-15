@@ -175,7 +175,7 @@ void doSecondAction(){
 void doEasyAction(){
     tutBoard->field[bombPos1.y][bombPos1.x].markedAsBomb = true;
     tutBoard->field[bombPos2.y][bombPos2.x].markedAsBomb = true;
-    tutBoard->field[7][0].concealed = false;
+    tutBoard->field[openPos1.y][openPos1.x].concealed = false;
     cursor.x = 0, cursor.y = 7;
 }
 

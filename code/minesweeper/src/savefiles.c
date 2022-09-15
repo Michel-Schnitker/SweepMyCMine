@@ -1,3 +1,5 @@
-//
-// Created by michel on 14.09.22.
-//
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
+

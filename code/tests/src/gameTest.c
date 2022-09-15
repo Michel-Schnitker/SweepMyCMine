@@ -10,6 +10,8 @@
 #include "event.h"
 #include "random.h"
 
+//todo: exchange from assert to ifPrint_Fatal
+
 void gameWonTest(){
 
     print_info("    Running Tests for win a game ...");

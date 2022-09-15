@@ -10,6 +10,9 @@
 static int lastInput;
 
 void drawHighScoreWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
+    (void) windowCol;
+    (void) windowRow;
+
     wmove(window,0,0);
     wbkgd(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
 

@@ -7,6 +7,8 @@
 #include "event.h"
 #include <ncurses.h>
 
+//todo: exchange from assert to ifPrint_Fatal
+
 void tuiColorTest(){
 
     print_info("    Running Tests for using colors ...");

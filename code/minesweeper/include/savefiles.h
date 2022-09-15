@@ -1,8 +1,15 @@
-//
-// Created by michel on 14.09.22.
-//
+/*
+ * Projekt URL: https://github.com/Michel-Schnitker/SweepMyCMine
+ * License:     MIT License
+ */
 
-#ifndef SWEEPMYCMINECLION_SAVEFILES_H
-#define SWEEPMYCMINECLION_SAVEFILES_H
+#ifndef SAVEFILES_H_
+#define SAVEFILES_H_
 
-#endif //SWEEPMYCMINECLION_SAVEFILES_H
+
+// todo: save and restore high score
+// todo: save and restore game config
+
+
+
+#endif //SAVEFILES_H_

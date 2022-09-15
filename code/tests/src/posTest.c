@@ -7,6 +7,8 @@
 #include "pos.h"
 #include "event.h"
 
+//todo: exchange from assert to ifPrint_Fatal
+
 void posCreateTest(){
 
     print_info("    Running Tests for create Pos ...");

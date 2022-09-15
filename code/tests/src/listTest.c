@@ -7,6 +7,8 @@
 #include "list.h"
 #include "event.h"
 
+//todo: use ifPrint_Fatal
+
 void addAndGetTest(){
 
     print_info("    Running Tests for add to list and get from list ...");

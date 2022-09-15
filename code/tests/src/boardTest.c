@@ -14,6 +14,8 @@ typedef struct TestCounter {
     uint32_t bombsInArea;
 } TestCounter;
 
+//todo: exchange from assert to ifPrint_Fatal
+
 void _countingField(Board *testBoard, TestCounter * count){
     count->concealed = count->marked = count->bombsInArea = count->bombs = 0;
 

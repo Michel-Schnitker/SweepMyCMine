@@ -29,6 +29,12 @@ int main(int argc, char *argv[]) {
     stopEventLogging();
 
 
+
+//    print_debug("print_debug");
+//    ifPrint_debug(false,"string %s", "true");
+//    ifPrint_debug(true,"string %s", "false");
+
+
 //    print_success("print_success");
 //    print_info("print_info");
 //    print_trace("print_trace");

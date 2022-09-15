@@ -7,6 +7,7 @@
 #include "random.h"
 #include "event.h"
 
+//todo: exchange from assert to ifPrint_Fatal
 
 void inRangeTest(){
 

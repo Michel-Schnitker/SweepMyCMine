@@ -157,9 +157,9 @@ void printEventToFile(FILE *stream, EventElement *event){
 }
 
 
-void printEvent(enum eventLevel level, const char *file, int line, const char *func, const char *fmt, ...) {
+void printEvent(enum eventLevel level, const char *file, int line, const char *func, bool ifBool, const char *fmt, ...) {
 
-    if(not levelEnable[level]) return;
+    if(not levelEnable[level] or not ifBool) return;
 
 
     EventElement *event = new_EventElem();

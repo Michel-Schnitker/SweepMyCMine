@@ -29,6 +29,8 @@
 
 //todo: make event thread safe
 
+//todo: implement IF-Print for debugging and a slim code
+
 enum eventLevel {
     EVENT_SUCCESS = (1<<0),
     EVENT_INFO = (1<<1),
@@ -62,17 +64,26 @@ EventElement* getEventMessageFromLog();
 
 uint32_t getEventBufferSize();
 
+#define ifPrint_success(b, ...) printEvent(EVENT_SUCCESS, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
+#define ifPrint_info(b, ...)  printEvent(EVENT_INFO,  __FILE__, __LINE__, __func__, b, __VA_ARGS__)
+#define ifPrint_trace(b, ...) printEvent(EVENT_TRACE, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
+#define ifPrint_debug(b, ...) printEvent(EVENT_DEBUG, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
+#define ifPrint_warning(b, ...)  printEvent(EVENT_WARNING,  __FILE__, __LINE__, __func__, b, __VA_ARGS__)
+#define ifPrint_error(b, ...) printEvent(EVENT_ERROR, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
+#define ifPrint_fatal(b, ...) printEvent(EVENT_FATAL, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
 
-#define print_success(...) printEvent(EVENT_SUCCESS, __FILE__, __LINE__, __func__, __VA_ARGS__)
-#define print_info(...)  printEvent(EVENT_INFO,  __FILE__, __LINE__, __func__, __VA_ARGS__)
-#define print_trace(...) printEvent(EVENT_TRACE, __FILE__, __LINE__, __func__, __VA_ARGS__)
-#define print_debug(...) printEvent(EVENT_DEBUG, __FILE__, __LINE__, __func__, __VA_ARGS__)
-#define print_warning(...)  printEvent(EVENT_WARNING,  __FILE__, __LINE__, __func__, __VA_ARGS__)
-#define print_error(...) printEvent(EVENT_ERROR, __FILE__, __LINE__, __func__, __VA_ARGS__)
-#define print_fatal(...) printEvent(EVENT_FATAL, __FILE__, __LINE__, __func__, __VA_ARGS__)
+#define print_success(...) printEvent(EVENT_SUCCESS, __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+#define print_info(...)  printEvent(EVENT_INFO,  __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+#define print_trace(...) printEvent(EVENT_TRACE, __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+#define print_debug(...) printEvent(EVENT_DEBUG, __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+#define print_warning(...)  printEvent(EVENT_WARNING,  __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+#define print_error(...) printEvent(EVENT_ERROR, __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+#define print_fatal(...) printEvent(EVENT_FATAL, __FILE__, __LINE__, __func__, true, __VA_ARGS__)
+
+void printEvent(enum eventLevel level, const char *file, int line, const char *func, bool ifBool, const char *fmt, ...);
 
 
-void printEvent(enum eventLevel level, const char *file, int line, const char *func, const char *fmt, ...);
+
 
 
 void enableEvent(enum eventLevel level);

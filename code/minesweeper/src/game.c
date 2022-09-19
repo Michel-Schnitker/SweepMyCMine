@@ -10,8 +10,10 @@
 #include "config.h"
 
 static Board * currentBoard = null;
+static enum GameLevel currentLevel = GAME_LEVEL_CUSTOMIZE;
 
-void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs){
+
+void game_startCustomize(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
     if(not checkConstructParameter(xSize, ySize, bombs)){ return;}
 
@@ -22,10 +24,18 @@ void game_startNew(uint32_t xSize, uint32_t ySize, uint32_t bombs){
     //todo: check if xSize, ySize and bombs is valid
     currentBoard = constructFullyRandomBoard(xSize, ySize, bombs);
 
+    currentLevel = GAME_LEVEL_CUSTOMIZE;
+}
 
+void game_startLevel(enum GameLevel level){
 
+    assert(level > 0 and level < MAX_GAME_LEVELS);
 
+    game_startCustomize(GameLevelConfig[level].xSize,
+                        GameLevelConfig[level].ySize,
+                        GameLevelConfig[level].bombs);
 
+    currentLevel = level;
 }
 
 
@@ -321,9 +331,15 @@ GameBoard * getGameBoard(){
 
     newGameBoard->free = freeGameBoard;
     newGameBoard->validPos = isValidPosOnGameBoard;
+    newGameBoard->gameLevel = currentLevel;
 
     return newGameBoard;
 }
 
+enum GameLevel getCurrentGameLevel(){
 
+    if(currentBoard == null) currentLevel = GAME_LEVEL_CUSTOMIZE;
+
+    return currentLevel;
+}
 

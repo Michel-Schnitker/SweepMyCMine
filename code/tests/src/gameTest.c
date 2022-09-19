@@ -141,7 +141,7 @@ void gameCapitulationTest(){
 
     print_info("    Running test for a capitulation in a game ...");
 
-    game_startNew(4,4,1);
+    game_startCustomize(4,4,1);
     game_capitulation();
     Pos pos = {.x = 0, .y = 0};
 
@@ -156,7 +156,7 @@ void destroyBoardTest(){
 
     print_info("    Running Tests for destroy a Board ...");
 
-    game_startNew(4,4,1);
+    game_startCustomize(4,4,1);
     destroyBoard();
     Pos pos = {.x = 1, .y = 2};
 
@@ -171,7 +171,7 @@ void getGameBoardMarkTest(){
 
     print_info("    Running Tests for get a GameBoard after mark a Cell ...");
 
-    game_startNew(9,10,10);
+    game_startCustomize(9,10,10);
 
     GameBoard * board = getGameBoard();
 
@@ -212,7 +212,7 @@ void getGameBoardOpenTest(){
 
     print_info("    Running Tests for get a GameBoard after open a Cell ...");
 
-    game_startNew(9,10,10);
+    game_startCustomize(9,10,10);
 
     GameBoard * board = getGameBoard();
 

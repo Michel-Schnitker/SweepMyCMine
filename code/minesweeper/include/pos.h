@@ -24,4 +24,6 @@ void freePos(Pos *pos);
 
 bool comparePos(Pos *posOne, Pos *posTwo);
 
+Pos *getRandomPosInRange(uint32_t minX, uint32_t maxX, uint32_t minY, uint32_t maxY);
+
 #endif  // POS_H_

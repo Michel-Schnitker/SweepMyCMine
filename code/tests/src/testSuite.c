@@ -3,6 +3,8 @@
  * License:     MIT License
  */
 
+#include "event.h"
+
 #include "posTest.h"
 #include "boardTest.h"
 #include "listTest.h"
@@ -12,11 +14,21 @@
 #include "tuiTest.h"
 
 void runAllTests(){
-    posTest();
-    listTest();
+
+    startEventLogging(DIREKT_PRINT);
+
+    // Test for standalone library
     randomTest();
+    listTest();
+    eventTest();
+
+    // Test for Minesweeper library
+    posTest();
     boardTest();
     gameTest();
-    eventTest();
+
+    // Test for Frameworks
     tuiTest();
+
+    stopEventLogging();
 }

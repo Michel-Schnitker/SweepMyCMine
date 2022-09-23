@@ -18,8 +18,6 @@ int main(int argc, char *argv[]) {
 
     assert(argc == 1);
 
-    startEventLogging(DIREKT_PRINT);
-
     runAllTests();
 
     startEventLogging(USE_LOG_BUFFER | PRINT_TO_FILE);
@@ -59,5 +57,5 @@ int main(int argc, char *argv[]) {
 //    Pos *p = new_Pos(1,2);
 //    p->free(p);
 
-    return SUCCESS;
+    return EXIT_SUCCESS;
 }

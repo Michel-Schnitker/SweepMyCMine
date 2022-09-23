@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 
+#include "random.h"
 #include "pos.h"
 
 void * clone(Pos *pos){
@@ -40,4 +41,8 @@ Pos * new_Pos(int32_t x, int32_t y){
     newPos->print = printPos;
     newPos->compare = comparePos;
     return newPos;
+}
+
+Pos *getRandomPosInRange(uint32_t minX, uint32_t maxX, uint32_t minY, uint32_t maxY){
+    return new_Pos(getRandomInRange(minX,maxX), getRandomInRange(minY, maxY));
 }

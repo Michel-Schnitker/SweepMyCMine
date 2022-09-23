@@ -33,11 +33,17 @@
 #define OPEN_FIELD_AFTER_FINISH true
 #define START_WITH_FIRST_SAFE_POS true
 #define ALL_BOMBS_FOUND_AREA_HELPER false       // todo: implement
-#define NON_FLAGGING                            // todo: implement
+#define NON_FLAGGING false                           // todo: implement
 
-#define SIMPLE_TUI_XSIZE_DEFAULT 24             //todo: this should become superfluous after the conversion to GameLevel.
-#define SIMPLE_TUI_YSIZE_DEFAULT 20             //todo: this should become superfluous after the conversion to GameLevel.
-#define SIMPLE_TUI_BOMBS_DEFAULT 99             //todo: this should become superfluous after the conversion to GameLevel.
+#define TUI_GAME_KEY_UP KEY_UP
+#define TUI_GAME_KEY_DOWN KEY_DOWN
+#define TUI_GAME_KEY_LEFT KEY_LEFT
+#define TUI_GAME_KEY_RIGHT KEY_RIGHT
+#define TUI_GAME_KEY_OPEN 'e'
+#define TUI_GAME_KEY_MARK 'w'
+#define TUI_GAME_KEY_CAPITULATION 'q'
+#define TUI_GAME_KEY_HELPER 't'
+#define TUI_GAME_KEY_SOLVER 'z'
 
 #define TUI_COLOR_BACKGROUND COLOR_BLACK
 #define TUI_COLOR_FRONT_TEXT COLOR_WHITE

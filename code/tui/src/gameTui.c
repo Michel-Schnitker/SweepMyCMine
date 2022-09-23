@@ -12,15 +12,18 @@
 #include "types.h"
 #include "game.h"
 #include "pos.h"
+#include "mainSolver.h"
 
-#define UP KEY_UP
-#define DOWN KEY_DOWN
-#define LEFT KEY_LEFT
-#define RIGHT KEY_RIGHT
+#define UP TUI_GAME_KEY_UP
+#define DOWN TUI_GAME_KEY_DOWN
+#define LEFT TUI_GAME_KEY_LEFT
+#define RIGHT TUI_GAME_KEY_RIGHT
 
-#define OPEN 'e'
-#define MARK 'w'
-#define CAPITULATION 'q'
+#define OPEN TUI_GAME_KEY_OPEN
+#define MARK TUI_GAME_KEY_MARK
+#define CAPITULATION TUI_GAME_KEY_CAPITULATION
+#define HELP TUI_GAME_KEY_HELPER
+#define SOLVE TUI_GAME_KEY_SOLVER
 
 static Pos cursor = {.x = 0, .y = 0};
 static GameBoard *gameBoard = null;
@@ -29,7 +32,7 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
 
     assert(gameBoard != null);
 
-    uint32_t row = (windowRow-SIMPLE_TUI_YSIZE_DEFAULT-2) /2, col = (windowCol-(SIMPLE_TUI_XSIZE_DEFAULT*3)) /2;
+    uint32_t row = (windowRow- gameBoard->ySize -2) /2, col = (windowCol-( gameBoard->xSize *3)) /2;
 
     wmove(gameWindow,row,col);
     wbkgd(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
@@ -92,7 +95,7 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
     wattron(gameWindow,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
     wmove(gameWindow,++row,col);
     wprintw(gameWindow, "Missing Bombs :%03i ", gameBoard->cellsToBeFound);
-    col += ((SIMPLE_TUI_XSIZE_DEFAULT*3)-12);
+    col += (( gameBoard->xSize *3)-12);
     wmove(gameWindow,row,col);
     wprintw(gameWindow, "Seconds :%03li ", gameBoard->runtime);
 
@@ -117,7 +120,12 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
 void initNewGame(){
     cursor.x = 0;
     cursor.y = 0;
-    game_startCustomize(SIMPLE_TUI_XSIZE_DEFAULT,SIMPLE_TUI_YSIZE_DEFAULT,SIMPLE_TUI_BOMBS_DEFAULT);
+    game_startLevel(GAME_LEVEL_EXPERT);
+    if(gameBoard != null) gameBoard->free(gameBoard);
+    gameBoard = getGameBoard();
+}
+
+void refreshGameBoard(){
     if(gameBoard != null) gameBoard->free(gameBoard);
     gameBoard = getGameBoard();
 }
@@ -180,14 +188,23 @@ void redirectInputToGameWindow(int key) {
             validInput = true;
             break;
 
+        case HELP:
+            solver_singleGameStep();
+            validInput = true;
+            break;
+
+        case SOLVE:
+            solver_finishGame();
+            validInput = true;
+            break;
+
         default:
             break;
     }
 
     if (validInput) {
 
-        gameBoard->free(gameBoard);
-        gameBoard = getGameBoard();
+        refreshGameBoard();
     }
 }
 
@@ -201,12 +218,12 @@ void drawGameStatusbar(WINDOW *window, int startCol){
     waddstr(window," Quit ");
 
     wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    waddstr(window,"(w)");
+    wprintw(window,"(%c)", MARK);
     wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     waddstr(window," Mark ");
 
     wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    waddstr(window,"(e)");
+    wprintw(window,"(%c)", OPEN);
     wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     waddstr(window," Open ");
 
@@ -214,10 +231,24 @@ void drawGameStatusbar(WINDOW *window, int startCol){
     waddstr(window,"(ARROWS)");
     wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     waddstr(window," Move ");
+
+    wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+    wprintw(window,"(%c)", HELP);
+    wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+    waddstr(window," Help ");
+
+    wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+    wprintw(window,"(%c)", SOLVE);
+    wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+    waddstr(window," Solve ");
 }
 
 void openGameWindow(){
-    initNewGame();
+
+    refreshGameBoard();
+    if(gameBoard == null){
+        initNewGame();
+    }
 }
 
 void closeGameWindow(){

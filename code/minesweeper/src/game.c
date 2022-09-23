@@ -182,7 +182,15 @@ bool game_mark(Pos * pos){
 }
 
 
+void _openCompleteField(){
 
+    for (uint32_t y = 0; y < currentBoard->ySize; ++y) {
+        for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
+            currentBoard->field[y][x].concealed = false;
+        }
+    }
+    currentBoard->openCells = currentBoard->ySize * currentBoard->xSize;
+}
 
 
 bool game_open(Pos * pos){
@@ -205,12 +213,7 @@ bool game_open(Pos * pos){
         currentBoard->gameFinish = true;
 
 #if OPEN_FIELD_AFTER_FINISH
-        for (uint32_t y = 0; y < currentBoard->ySize; ++y) {
-            for (uint32_t x = 0; x < currentBoard->xSize; ++x) {
-                currentBoard->field[y][x].concealed = false;
-            }
-        }
-        currentBoard->openCells = currentBoard->ySize * currentBoard->xSize;
+        _openCompleteField();
 #else
         cell->concealed = false;
         currentBoard->openCells++;
@@ -230,7 +233,9 @@ bool game_open(Pos * pos){
 void game_capitulation(){
     if(currentBoard == null) return;
 
-    //todo: if open board after finish is aktiv ... open all cells
+#if OPEN_FIELD_AFTER_FINISH
+    _openCompleteField();
+#endif
 
     currentBoard->gameFinish = true;
 }
@@ -242,9 +247,8 @@ void destroyBoard(){
     nonNull(currentBoard);
     currentBoard->free(currentBoard);
     currentBoard = null;
+    currentLevel = GAME_LEVEL_CUSTOMIZE;
 }
-
-//todo: Return of the game states
 
 void freeGameBoard(GameBoard *gameBoard){
     for (uint32_t i = 0; i < gameBoard->ySize; ++i) {

@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define EVENT_COLORING true
-#define EVENT_STREAM stdout // stderr, stdout or file
+#define EVENT_STREAM stderr // stderr, stdout
 #define EVENT_MESSAGE_LENGTH_META 23
 #define EVENT_MESSAGE_LENGTH_PATH 149
 #define EVENT_MESSAGE_LENGTH_MSG 149
@@ -28,8 +28,6 @@
 #define EVENT_FATAL_ENABLE_DEFAULT true
 
 //todo: make event thread safe
-
-//todo: implement IF-Print for debugging and a slim code
 
 enum eventLevel {
     EVENT_SUCCESS = (1<<0),
@@ -64,6 +62,7 @@ EventElement* getEventMessageFromLog();
 
 uint32_t getEventBufferSize();
 
+
 #define ifPrint_success(b, ...) printEvent(EVENT_SUCCESS, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
 #define ifPrint_info(b, ...)  printEvent(EVENT_INFO,  __FILE__, __LINE__, __func__, b, __VA_ARGS__)
 #define ifPrint_trace(b, ...) printEvent(EVENT_TRACE, __FILE__, __LINE__, __func__, b, __VA_ARGS__)
@@ -83,11 +82,10 @@ uint32_t getEventBufferSize();
 void printEvent(enum eventLevel level, const char *file, int line, const char *func, bool ifBool, const char *fmt, ...);
 
 
-
-
-
 void enableEvent(enum eventLevel level);
 
 void disableEvent(enum eventLevel level);
+
+void setDefaultEnableEvent();
 
 #endif  // EVENT_H_

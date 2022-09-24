@@ -237,3 +237,13 @@ void enableEvent(enum eventLevel level){
 void disableEvent(enum eventLevel level){
     setEnableingForEvents(level, false);
 }
+
+void setDefaultEnableEvent(){
+    levelEnable[EVENT_SUCCESS] = EVENT_SUCCESS_ENABLE_DEFAULT;
+    levelEnable[EVENT_INFO] = EVENT_INFO_ENABLE_DEFAULT;
+    levelEnable[EVENT_TRACE] = EVENT_TRACE_ENABLE_DEFAULT;
+    levelEnable[EVENT_DEBUG] = EVENT_DEBUG_ENABLE_DEFAULT;
+    levelEnable[EVENT_WARNING] = EVENT_WARNING_ENABLE_DEFAULT;
+    levelEnable[EVENT_ERROR] = EVENT_ERROR_ENABLE_DEFAULT;
+    levelEnable[EVENT_FATAL] = EVENT_FATAL_ENABLE_DEFAULT;
+}

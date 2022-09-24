@@ -13,6 +13,7 @@
 #include "game.h"
 #include "pos.h"
 #include "mainSolver.h"
+#include "feature.h"
 
 #define UP TUI_GAME_KEY_UP
 #define DOWN TUI_GAME_KEY_DOWN
@@ -27,6 +28,7 @@
 
 static Pos cursor = {.x = 0, .y = 0};
 static GameBoard *gameBoard = null;
+static Features *features = null;
 
 void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) {    // row = y, col = x
 
@@ -130,6 +132,11 @@ void refreshGameBoard(){
     gameBoard = getGameBoard();
 }
 
+void refreshFeatures(){
+    if(features != null) free(features);
+    features = getGameFeatures();
+}
+
 void redirectInputToGameWindow(int key) {
 
     Pos nextPos = {.x = cursor.x, .y = cursor.y};
@@ -184,16 +191,19 @@ void redirectInputToGameWindow(int key) {
             break;
 
         case MARK:
+            if(features->nonFlagging) break;
             game_mark(&cursor);
             validInput = true;
             break;
 
         case HELP:
+            if(not features->solverAllowed) break;
             solver_singleGameStep();
             validInput = true;
             break;
 
         case SOLVE:
+            if(not features->solverAllowed) break;
             solver_finishGame();
             validInput = true;
             break;
@@ -217,10 +227,13 @@ void drawGameStatusbar(WINDOW *window, int startCol){
     wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     waddstr(window," Quit ");
 
-    wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    wprintw(window,"(%c)", MARK);
-    wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    waddstr(window," Mark ");
+    if (not features->nonFlagging){
+
+        wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+        wprintw(window,"(%c)", MARK);
+        wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+        waddstr(window," Mark ");
+    }
 
     wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     wprintw(window,"(%c)", OPEN);
@@ -232,20 +245,26 @@ void drawGameStatusbar(WINDOW *window, int startCol){
     wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
     waddstr(window," Move ");
 
-    wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    wprintw(window,"(%c)", HELP);
-    wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    waddstr(window," Help ");
+    if (features->solverAllowed){
 
-    wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    wprintw(window,"(%c)", SOLVE);
-    wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
-    waddstr(window," Solve ");
+        wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+        wprintw(window,"(%c)", HELP);
+        wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+        waddstr(window," Help ");
+
+        wattron(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+        wprintw(window,"(%c)", SOLVE);
+        wattroff(window,COLOR_PAIR(COLOR_MAIN_MENU_Akzent));
+        waddstr(window," Solve ");
+    }
+
 }
 
 void openGameWindow(){
 
     refreshGameBoard();
+    refreshFeatures();
+
     if(gameBoard == null){
         initNewGame();
     }

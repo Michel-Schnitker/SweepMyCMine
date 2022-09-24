@@ -8,44 +8,68 @@
 #include "game.h"
 #include "event.h"
 #include "config.h"
+#include "feature.h"
 
 static Board * currentBoard = null;
 static enum GameLevel currentLevel = GAME_LEVEL_CUSTOMIZE;
+static Features *features = null;
 
+void _refreshFeatures(){
+    if(features != null) free(features);
+    features = getGameFeatures();
+}
 
-void game_startCustomize(uint32_t xSize, uint32_t ySize, uint32_t bombs){
+void game_startLevel(enum GameLevel level){
 
-    if(not checkConstructParameter(xSize, ySize, bombs)){ return;}
+    assert(level >= 0 and level < MAX_GAME_LEVELS);
+
 
     if(currentBoard != null){
         currentBoard->free(currentBoard);
     }
 
-    //todo: check if xSize, ySize and bombs is valid
-    currentBoard = constructFullyRandomBoard(xSize, ySize, bombs);
+    currentLevel = level;
+    _refreshFeatures();
 
-    currentLevel = GAME_LEVEL_CUSTOMIZE;
+    if(level == GAME_LEVEL_CUSTOMIZE){
+        if(not checkConstructParameter(features->customizeFieldConfig.xSize,
+                                       features->customizeFieldConfig.ySize,
+                                       features->customizeFieldConfig.bombs)){ return;}
+        currentBoard = constructFullyRandomBoard(features->customizeFieldConfig.xSize,
+                                                 features->customizeFieldConfig.ySize,
+                                                 features->customizeFieldConfig.bombs);
+    }
+    else{
+        if(not checkConstructParameter(GameLevelConfig[level].xSize,
+                                       GameLevelConfig[level].ySize,
+                                       GameLevelConfig[level].bombs)){ return;}
+        currentBoard = constructFullyRandomBoard(GameLevelConfig[level].xSize,
+                                                 GameLevelConfig[level].ySize,
+                                                 GameLevelConfig[level].bombs);
+    }
+
 }
 
-void game_startLevel(enum GameLevel level){
+void game_startCustomize(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
-    assert(level > 0 and level < MAX_GAME_LEVELS);
+    _refreshFeatures();
+    features->customizeFieldConfig.xSize = xSize;
+    features->customizeFieldConfig.ySize = ySize;
+    features->customizeFieldConfig.bombs = bombs;
+    setGameFeatures(features);
 
-    game_startCustomize(GameLevelConfig[level].xSize,
-                        GameLevelConfig[level].ySize,
-                        GameLevelConfig[level].bombs);
-
-    currentLevel = level;
+    game_startLevel(GAME_LEVEL_CUSTOMIZE);
 }
 
 
 bool game_startThis(Board *board){
     nonNull(board);
 
-#if START_WITH_FIRST_SAFE_POS
-    print_warning("Attention Game is played with FIRST_SAFE_POS. There may be a new board after the first run.");
-#endif
+    _refreshFeatures();
 
+    if (features->startWithFirstSafePos){
+        print_warning("Attention Game is played with FIRST_SAFE_POS. There may be a new board after the first run.");
+    }
 
     //todo: check if *board is valid. if not return false;
 
@@ -56,7 +80,7 @@ bool game_startThis(Board *board){
     }
 
     currentBoard = board;
-
+    currentLevel = GAME_LEVEL_CUSTOMIZE;
 
     return true;
 
@@ -140,22 +164,21 @@ void _checkIfFirstPos(Pos *pos){
     }
     nonNull(pos);
 
-//    print_debug("check first pos");
-#if START_WITH_FIRST_SAFE_POS
-//    if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].concealed and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
-    if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].markedAsBomb and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
-    //if(currentBoard->gameFinish or currentBoard->field[pos->y][pos->x].bombsAround != 0){
-//        print_debug("recreate board becuase of first safePos");
-        uint32_t x = currentBoard->xSize, y = currentBoard->ySize, bombs = currentBoard->bombs;
-        currentBoard->free(currentBoard);
-        currentBoard = constructRandBoardWithBombproofPos(x,
-                                                          y,
-                                                          bombs,
-                                                          pos);
 
+    if (features->startWithFirstSafePos){
 
+        if(currentBoard->gameFinish or (not currentBoard->field[pos->y][pos->x].markedAsBomb and currentBoard->field[pos->y][pos->x].bombsAround != 0)){
+
+            uint32_t x = currentBoard->xSize, y = currentBoard->ySize, bombs = currentBoard->bombs;
+            currentBoard->free(currentBoard);
+            currentBoard = constructRandBoardWithBombproofPos(x,
+                                                              y,
+                                                              bombs,
+                                                              pos);
+
+        }
     }
-#endif
+
 
     time(&(currentBoard->start));
     currentBoard->gameStarted = true;
@@ -163,7 +186,7 @@ void _checkIfFirstPos(Pos *pos){
 
 
 bool game_mark(Pos * pos){
-    if(not _checkBeforeMove(pos)){
+    if(not _checkBeforeMove(pos) or features->nonFlagging){
         return false;
     }
 
@@ -212,12 +235,15 @@ bool game_open(Pos * pos){
     if(cell->containsBomb){
         currentBoard->gameFinish = true;
 
-#if OPEN_FIELD_AFTER_FINISH
-        _openCompleteField();
-#else
-        cell->concealed = false;
-        currentBoard->openCells++;
-#endif
+        if (features->openFieldAfterFinish){
+
+            _openCompleteField();
+        }
+        else{
+
+            cell->concealed = false;
+            currentBoard->openCells++;
+        }
     }
 
     _checkIfFirstPos(pos);
@@ -233,9 +259,9 @@ bool game_open(Pos * pos){
 void game_capitulation(){
     if(currentBoard == null) return;
 
-#if OPEN_FIELD_AFTER_FINISH
-    _openCompleteField();
-#endif
+    if (features->openFieldAfterFinish){
+        _openCompleteField();
+    }
 
     currentBoard->gameFinish = true;
 }

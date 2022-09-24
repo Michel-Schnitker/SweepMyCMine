@@ -9,22 +9,28 @@
 #include "pos.h"
 #include "event.h"
 #include "random.h"
+#include "feature.h"
 
 //todo: exchange from assert to ifPrint_Fatal
+//todo: change tests for use with feature
+//todo: test all features
+
+static Features *features = null;
 
 void gameWonTest(){
 
     print_info("    Running Tests for win a game ...");
 
-#if START_WITH_FIRST_SAFE_POS
-    // FirstPos is required so that the playing field is not recreated with mode FIRST_SAFE_POS. Otherwise the locations of the bombs would be unknown.
-    Pos pos1 = {.x = 0, .y = 0};
-    Board *board = constructRandBoardWithBombproofPos(5,5,2,&pos1);
+    Board *board = null;
 
-#else
-    Board *board = constructFullyRandomBoard(5,5,2);
-
-#endif
+    if(features->startWithFirstSafePos){
+        // FirstPos is required so that the playing field is not recreated with mode FIRST_SAFE_POS. Otherwise the locations of the bombs would be unknown.
+        Pos pos1 = {.x = 0, .y = 0};
+        board = constructRandBoardWithBombproofPos(5,5,2,&pos1);
+    }
+    else{
+        board = constructFullyRandomBoard(5,5,2);
+    }
 
     game_startThis(board);
 
@@ -94,21 +100,28 @@ void gameOpenTest(){
 
     print_info("    Running Tests for open a Pos ...");
 
-#if START_WITH_FIRST_SAFE_POS
-    // FirstPos is required so that the playing field is not recreated with mode FIRST_SAFE_POS. Otherwise the locations of the bombs would be unknown.
-    Pos randomPos = {.x = 2, .y = 3};
-    Board *board = constructRandBoardWithBombproofPos(5,5,13,&randomPos);
-    Cell *randomCell = &(board->field[randomPos.x][randomPos.y]);
+    Board *board = null;
+    Pos randomPos;
+    Cell *randomCell = null;
 
-#else
-    Board *board = constructFullyRandomBoard(5,5,13);
+    if(features->startWithFirstSafePos){
 
-    int32_t randomX = getRandomInRange(0,board->xSize-1), randomY = getRandomInRange(0,board->ySize-1);
+        // FirstPos is required so that the playing field is not recreated with mode FIRST_SAFE_POS. Otherwise the locations of the bombs would be unknown.
+        randomPos.x = 2;
+        randomPos.y = 3;
+        board = constructRandBoardWithBombproofPos(5,5,13,&randomPos);
+        randomCell = &(board->field[randomPos.x][randomPos.y]);
+    }
+    else{
 
-    Cell *randomCell = &(board->field[randomY][randomX]);
-    Pos randomPos = {.x = randomX, .y = randomY};
+        board = constructFullyRandomBoard(5,5,13);
 
-#endif
+        int32_t randomX = getRandomInRange(0,board->xSize-1), randomY = getRandomInRange(0,board->ySize-1);
+
+        randomCell = &(board->field[randomY][randomX]);
+        randomPos.x = randomX;
+        randomPos.y = randomY;
+    }
 
     game_startThis(board);
 
@@ -243,6 +256,8 @@ void gameTest(){
 
     print_info("Running Tests for game.c");
 
+    features = getGameFeatures();
+
     gameWonTest();
     gameMarkTest();
     gameOpenTest();
@@ -251,5 +266,6 @@ void gameTest(){
     getGameBoardMarkTest();
     getGameBoardOpenTest();
 
+    free(features);
     destroyBoard();
 }

@@ -29,11 +29,14 @@
 
 #define DEBUGMODE false
 
-//todo: transfer Configuration
-#define OPEN_FIELD_AFTER_FINISH true
-#define START_WITH_FIRST_SAFE_POS true
-#define ALL_BOMBS_FOUND_AREA_HELPER false       // todo: implement
-#define NON_FLAGGING false                           // todo: implement
+#define FEATURE_DEFAULT_openFieldAfterFinish true
+#define FEATURE_DEFAULT_startWithFirstSafePos true
+#define FEATURE_DEFAULT_allBombsFoundAreaHelper false
+#define FEATURE_DEFAULT_nonFlagging false
+#define FEATURE_DEFAULT_customizeFieldConfig_xSize 40
+#define FEATURE_DEFAULT_customizeFieldConfig_ySize 40
+#define FEATURE_DEFAULT_customizeFieldConfig_bombs 400
+#define FEATURE_DEFAULT_solverAllowed true
 
 #define TUI_GAME_KEY_UP KEY_UP
 #define TUI_GAME_KEY_DOWN KEY_DOWN

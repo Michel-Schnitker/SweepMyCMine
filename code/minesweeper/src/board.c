@@ -10,6 +10,7 @@
 #include "board.h"
 #include "random.h"
 #include "event.h"
+#include "feature.h"
 
 void printBoard(Board *board){
 
@@ -166,12 +167,7 @@ bool checkConstructParameter(uint32_t xSize, uint32_t ySize, uint32_t bombs){
 
     return(xSize >= BOARD_MINSIZE_X and ySize >= BOARD_MINSIZE_Y and
             xSize <= BOARD_MAXSIZE_X and ySize <= BOARD_MAXSIZE_Y and
-#if START_WITH_FIRST_SAFE_POS
-            bombs + 9 < xSize * ySize and
-#else
-            bombs < xSize * ySize and
-#endif
-            bombs > 0
+            bombs + 9 < xSize * ySize and bombs > 0
     );
 }
 

@@ -87,8 +87,6 @@ void setColors(){
 
 void initTui(){
 
-//    disableEvent(EVENT_SUCCESS | EVENT_INFO | EVENT_TRACE | EVENT_DEBUG | EVENT_WARNING | EVENT_ERROR | EVENT_FATAL);
-
     initscr();
     getmaxyx(stdscr,terminalRow,terminalCol);
 
@@ -119,6 +117,8 @@ void refreshStatusWindow(int windowNumber){
 
 
 void mainTui(){
+
+    startEventLogging(USE_LOG_BUFFER | PRINT_TO_FILE);
     initTui();
     setColors();
 
@@ -179,7 +179,6 @@ void mainTui(){
 
     }
 
-
-
     closeTUI();
+    stopEventLogging();
 }

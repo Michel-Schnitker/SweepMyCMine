@@ -7,8 +7,6 @@
 #include "event.h"
 #include <ncurses.h>
 
-//todo: exchange from assert to ifPrint_Fatal
-
 void tuiColorTest(){
 
     print_info("    Running Tests for using colors ...");
@@ -17,8 +15,7 @@ void tuiColorTest(){
 
     if(has_colors() == FALSE){
         endwin();
-        print_error("Your terminal does not support color");
-        assert(false);
+        ifPrint_fatal(true, "         Your terminal does not support color");
     }
     endwin();
 

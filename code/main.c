@@ -20,11 +20,8 @@ int main(int argc, char *argv[]) {
 
     runAllTests();
 
-    startEventLogging(USE_LOG_BUFFER | PRINT_TO_FILE);
-
     mainTui();
 
-    stopEventLogging();
 
 
 
@@ -41,21 +38,6 @@ int main(int argc, char *argv[]) {
 //    print_error("print_error");
 //    print_fatal("print_fatal");
 
-
-//    Board *b = constructFullyRandomBoard(10,10,30);
-//    b->print(b);
-//    b->free(b);
-
-
-//    game_startNew(10,10,40);
-//    Board *board = game_debugReturnBoard();
-//    board->print(board);
-//    Pos pos1 ={ .x = 2, .y = 3 };
-//    game_open(&pos1);
-//    board->print(board);
-
-//    Pos *p = new_Pos(1,2);
-//    p->free(p);
 
     return EXIT_SUCCESS;
 }

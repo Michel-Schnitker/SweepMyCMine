@@ -61,6 +61,9 @@ void game_startCustomize(uint32_t xSize, uint32_t ySize, uint32_t bombs){
     game_startLevel(GAME_LEVEL_CUSTOMIZE);
 }
 
+void game_restart(){
+    if(currentBoard != null) game_startLevel(currentLevel);
+}
 
 bool game_startThis(Board *board){
     nonNull(board);
@@ -128,11 +131,8 @@ void _openCellsInArea(Pos * pos){
         return;
     }
 
-    int32_t lowerX = pos->x -1, upperX = pos->x +1;
-    int32_t lowerY = pos->y -1, upperY = pos->y +1;
-
-    for (int32_t y = lowerY; y <= upperY; ++y) {
-        for (int32_t x = lowerX; x <= upperX; ++x) {
+    eachAround(y, pos->y){
+        eachAround(x, pos->x){
 
             // temp Pos without function pointer
             Pos newPos = {
@@ -215,6 +215,41 @@ void _openCompleteField(){
     currentBoard->openCells = currentBoard->ySize * currentBoard->xSize;
 }
 
+bool _allFoundAreaHelper(Pos * pos) {
+
+    Cell *cell = &(currentBoard->field[pos->y][pos->x]);
+    uint32_t countMarkers = 0;
+
+    assert(cell->bombsAround > 0);
+
+    eachAround(y, pos->y) {
+        eachAround(x, pos->x) {
+
+            Pos newPos = { .x = x, .y = y };
+
+            if (currentBoard->validPos(currentBoard,&newPos) and currentBoard->field[y][x].markedAsBomb) countMarkers++;
+        }
+    }
+
+    if(cell->bombsAround == countMarkers){
+
+        eachAround(y, pos->y) {
+            eachAround(x, pos->x) {
+
+                Pos newPos = { .x = x, .y = y };
+
+                if(currentBoard->validPos(currentBoard,&newPos) and not currentBoard->field[y][x].markedAsBomb and currentBoard->field[y][x].concealed){
+                    game_open(&newPos);
+                }
+
+            }
+        }
+        _checkWon();
+        return true;
+    }
+
+    return false;
+}
 
 bool game_open(Pos * pos){
     if(not _checkBeforeMove(pos)){
@@ -228,8 +263,14 @@ bool game_open(Pos * pos){
         return false;
     }
     if(not cell->concealed){
-        print_warning("Trying to reopen an already open cell.");
-        return false;
+
+        if(features->allBombsFoundAreaHelper and cell->bombsAround > 0){
+            return _allFoundAreaHelper(pos);
+        }
+        else{
+            print_warning("Trying to reopen an already open cell.");
+            return false;
+        }
     }
 
     if(cell->containsBomb){

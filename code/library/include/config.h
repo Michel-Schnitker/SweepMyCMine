@@ -31,12 +31,13 @@
 
 #define FEATURE_DEFAULT_openFieldAfterFinish true
 #define FEATURE_DEFAULT_startWithFirstSafePos true
-#define FEATURE_DEFAULT_allBombsFoundAreaHelper false
+#define FEATURE_DEFAULT_allBombsFoundAreaHelper true
 #define FEATURE_DEFAULT_nonFlagging false
 #define FEATURE_DEFAULT_customizeFieldConfig_xSize 40
 #define FEATURE_DEFAULT_customizeFieldConfig_ySize 40
 #define FEATURE_DEFAULT_customizeFieldConfig_bombs 400
-#define FEATURE_DEFAULT_solverAllowed true
+#define FEATURE_DEFAULT_gameMode GAME_LEVEL_EXPERT
+#define FEATURE_DEFAULT_solverAllowed false
 
 #define TUI_GAME_KEY_UP KEY_UP
 #define TUI_GAME_KEY_DOWN KEY_DOWN
@@ -61,6 +62,8 @@
 #define EVENT_LOGGING_PATH "logging.txt"
 
 #define SCORE_FILE_PATH ".score"
+#define SCORE_NUMBER_SCORES_TO_SAVED 4
+
 #define FEATURE_FILE_PATH ".config"
 
 #endif  // CONFIG_H_

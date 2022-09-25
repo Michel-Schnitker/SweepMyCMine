@@ -11,6 +11,7 @@
 #include "randomTest.h"
 #include "gameTest.h"
 #include "featuresTest.h"
+#include "scoreTest.h"
 #include "eventTest.h"
 #include "tuiTest.h"
 
@@ -28,6 +29,7 @@ void runAllTests(){
     boardTest();
     gameTest();
     featuresTest();
+    scoreTest();
 
     // Test for Frameworks
     tuiTest();

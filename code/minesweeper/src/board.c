@@ -10,7 +10,6 @@
 #include "board.h"
 #include "random.h"
 #include "event.h"
-#include "feature.h"
 
 void printBoard(Board *board){
 
@@ -85,11 +84,8 @@ bool isPosValid(Board * board, Pos *pos){
 void placeBombOnPos(Board * newBoard, Pos * bombPos){
     assert(isPosValid(newBoard, bombPos));
 
-    int32_t lowerX = bombPos->x -1, upperX = bombPos->x +1;
-    int32_t lowerY = bombPos->y -1, upperY = bombPos->y +1;
-
-    for (int32_t y = lowerY; y <= upperY; ++y) {
-        for (int32_t x = lowerX; x <= upperX; ++x) {
+    eachAround(y, bombPos->y){
+        eachAround(x, bombPos->x){
 
             if(_isPosValid(newBoard, x, y)){
                 newBoard->field[y][x].bombsAround++;
@@ -117,11 +113,8 @@ void placeRandomBombs(Board * newBoard, uint32_t bombs, Pos * bombproofPos){
 
     if(bombproofPos != null){
 
-        int32_t lowerX = bombproofPos->x -1, upperX = bombproofPos->x +1;
-        int32_t lowerY = bombproofPos->y -1, upperY = bombproofPos->y +1;
-
-        for (int32_t y = lowerY; y <= upperY; ++y) {
-            for (int32_t x = lowerX; x <= upperX; ++x) {
+        eachAround(y, bombproofPos->y){
+            eachAround(x, bombproofPos->x){
 
                 if(_isPosValid(newBoard, x, y)){
 
@@ -143,7 +136,6 @@ void placeRandomBombs(Board * newBoard, uint32_t bombs, Pos * bombproofPos){
         currentPos->free(currentPos);
     }
 
-    //todo: including the free function via the "object" is not that pretty
     places->delete(places, (void*)freePos);
 }
 

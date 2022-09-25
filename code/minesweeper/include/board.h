@@ -47,5 +47,6 @@ Board * constructRandBoardWithBombproofPos(uint32_t xSize, uint32_t ySize, uint3
 Board * constructBoardByListsOfPos(uint32_t xSize, uint32_t ySize, List *bombs);
 
 
+#define eachAround(i, rootI) for (int32_t i = rootI-1; i <= rootI+1; i++)
 
 #endif  //BOARD_H_

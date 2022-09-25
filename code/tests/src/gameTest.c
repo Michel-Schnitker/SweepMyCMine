@@ -31,8 +31,9 @@ void gameWonTest(){
     else{
         board = constructFullyRandomBoard(5,5,2);
     }
-
+    disableEvent(EVENT_WARNING);
     game_startThis(board);
+    enableEvent(EVENT_WARNING);
 
     assert(board->gameFinish == false);
     assert(board->gameStarted == false);
@@ -67,7 +68,9 @@ void gameMarkTest(){
     print_info("    Running Tests for marking a Pos as a Bomb ...");
 
     Board *board = constructFullyRandomBoard(5,5,2);
+    disableEvent(EVENT_WARNING);
     game_startThis(board);
+    enableEvent(EVENT_WARNING);
 
     assert(board->gameFinish == false);
     assert(board->gameStarted == false);
@@ -123,7 +126,9 @@ void gameOpenTest(){
         randomPos.y = randomY;
     }
 
+    disableEvent(EVENT_WARNING);
     game_startThis(board);
+    enableEvent(EVENT_WARNING);
 
     assert(board->gameFinish == false);
     assert(board->gameStarted == false);

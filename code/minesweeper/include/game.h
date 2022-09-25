@@ -85,9 +85,11 @@ typedef struct GameBoard {
     bool (*validPos)(struct Pos *pos);
 } GameBoard;
 
+void game_startLevel(enum GameLevel level);
+
 void game_startCustomize(uint32_t xSize, uint32_t ySize, uint32_t bombs);
 
-void game_startLevel(enum GameLevel level);
+void game_restart();
 
 bool game_startThis(Board *board);
 

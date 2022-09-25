@@ -24,6 +24,7 @@ void setDefaultFeatures(){
     currentFeatures->customizeFieldConfig.xSize = FEATURE_DEFAULT_customizeFieldConfig_xSize;
     currentFeatures->customizeFieldConfig.ySize = FEATURE_DEFAULT_customizeFieldConfig_ySize;
     currentFeatures->customizeFieldConfig.bombs = FEATURE_DEFAULT_customizeFieldConfig_bombs;
+    currentFeatures->gameMode = FEATURE_DEFAULT_gameMode;
     currentFeatures->solverAllowed = FEATURE_DEFAULT_solverAllowed;
 }
 
@@ -63,7 +64,7 @@ bool setGameFeatures(Features *newFeatures){
 
     memcpy(currentFeatures, newFeatures, sizeof(Features) );
 
-    //todo: restart Game with new features ?!
+    game_restart();
 
     return true;
 }

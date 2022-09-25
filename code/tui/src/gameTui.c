@@ -122,7 +122,7 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
 void initNewGame(){
     cursor.x = 0;
     cursor.y = 0;
-    game_startLevel(GAME_LEVEL_EXPERT);
+    game_startLevel(features->gameMode);
     if(gameBoard != null) gameBoard->free(gameBoard);
     gameBoard = getGameBoard();
 }

@@ -23,12 +23,10 @@ typedef struct ListElement {
  *      remove      If the compare function is zero the pointer is compared, if not then the function decides if these payloads are equal.
  *      remove      if the delete function is non-zero, the payload is executed on the delete function, if not, the payload is not deleted.
  *      delete      specific parameters of the delete function
- *      add         always add to the tail
- *
  */
 
 /**
- *  add         :    \\todo:
+ *  add         :    adds an element on the tail
  *  getFirst    :    \\todo:
  *  getIndex    :    \\todo:
  *  getCompare  :    \\todo:

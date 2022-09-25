@@ -148,7 +148,6 @@ void *popIndex(List *list, uint32_t index) {
 
 
 void *getCompare(List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo)) {
-    //todo: the following function takes over the check
     nonNull(list);
     nonNull(payload);
     nonNull(compareElemFunc);
@@ -162,7 +161,6 @@ void *getCompare(List *list, void *payload, bool (*compareElemFunc)(void *payloa
 
 
 void *popCompare(List *list, void *payload, bool (*compareElemFunc)(void *payloadOne, void *payloadTwo)) {
-    //todo: the following function takes over the check
     nonNull(list);
     nonNull(payload);
     nonNull(compareElemFunc);

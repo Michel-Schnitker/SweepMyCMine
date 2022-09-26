@@ -10,7 +10,7 @@
 static ScoreEntry **scores = null;
 
 void free_ScoreEntry(ScoreEntry *entry){
-    free(entry->name);
+    if(entry->name != null) free(entry->name);
     free(entry);
 }
 
@@ -69,11 +69,13 @@ ScoreEntry *getScoreEntry(enum GameLevel newLevel, uint32_t rang){
     assert(rang >= 1 and rang <= SCORE_NUMBER_SCORES_TO_SAVED);
     assert(newLevel > 0 and newLevel < MAX_GAME_LEVELS);
 
+    rang--;
+
     if(scores == null) _loadScores();
 
     ScoreEntry *newScore = calloc(1,sizeof(ScoreEntry));
     newScore->free = free_ScoreEntry;
-    newScore->rang = rang;
+    newScore->rang = rang+1;
     newScore->time = scores[newLevel][rang].time;
     newScore->level = newLevel;
 
@@ -81,7 +83,7 @@ ScoreEntry *getScoreEntry(enum GameLevel newLevel, uint32_t rang){
         newScore->name = null;
     }
     else{
-        char *name = malloc(strlen(scores[newLevel][rang].name + 1)* sizeof(char));
+        char *name = malloc((strlen(scores[newLevel][rang].name) + 1)* sizeof(char));
         strcpy(name, scores[newLevel][rang].name);
         newScore->name = name;
     }
@@ -93,6 +95,8 @@ void createNewEntry(uint32_t rang, char *name, time_t time, enum GameLevel level
 
     if ( not checkIfNewRecord(level, time)) return;
 
+    (void) rang;
+    (void) name;
     //todo: Sort into array
 }
 

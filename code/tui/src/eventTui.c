@@ -13,7 +13,6 @@
 
 
 void drawEventWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
-    (void) windowCol;
 
     uint32_t row = (windowRow - getEventBufferSize()) / 2, col = 4;
 
@@ -23,6 +22,8 @@ void drawEventWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
     EventElement *event = getEventMessageFromLog();
 
     if(event == null){
+        uint32_t textCol = (windowCol-22) /2;
+        wmove(window,row,textCol);
         wprintw(window, "no messages available.");
     }
 
@@ -49,6 +50,8 @@ void drawEventWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
                 break;
         }
 
+        uint32_t textCol = (windowCol-(strlen(event->metaString) + strlen(event->pathString) + strlen(event->messageString) + 2)) /2;
+        wmove(window,row,textCol);
         wprintw(window, "%s %s %s", event->metaString, event->pathString, event->messageString);
         wmove(window,++row,col);
         event = getEventMessageFromLog();

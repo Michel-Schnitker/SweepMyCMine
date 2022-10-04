@@ -26,5 +26,6 @@
 
 #define UNREACHABLE assert(false)
 
+#define stringFromBool(b) ((b) ? "True" : "False")
 
 #endif  // TYPES_H_

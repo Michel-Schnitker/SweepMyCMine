@@ -55,7 +55,6 @@
 >| ![simpleStart](/doku/images/tui_gameStart.png) | ![simpleOpen](/doku/images/tui_gameMidgame.png) |
 >| :----: | :----: |
 >| ![simpleMark](/doku/images/tui_gameLose.png) | ![simpleLose](/doku/images/tui_config.png) |
->| :----: | :----: |
 >| ![simpleMark](/doku/images/tui_messages.png) | ![simpleLose](/doku/images/tui_tutorial.png) |
 >
 >	todo

@@ -57,6 +57,7 @@ void eventDisableTest(){
     uint32_t numOfEventBuffer = getEventBufferSize();
 
     startEventLogging(DIREKT_PRINT);
+    enableEvent(EVENT_WARNING);
 
     ifPrint_fatal(numOfEventBuffer != 0, "         Buffer-size of events is not zero but all events are disabled.");
 

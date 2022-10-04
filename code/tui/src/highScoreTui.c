@@ -8,34 +8,48 @@
 #include "globalTui.h"
 #include "game.h"
 #include "score.h"
+#include "string.h"
 
 #define SAVE TUI_SCORE_KEY_SAVE
 #define RESET TUI_SCORE_KEY_RESET
 
+#define LENGTH_OF_SCORE_STRING 10
+
+void printScoreString( WINDOW *window, ScoreEntry *score, uint32_t row, uint32_t windowCol){
+
+    uint32_t textCol = (windowCol - LENGTH_OF_SCORE_STRING) /2;
+    wmove(window,row,textCol);
+
+    if(score->name == null){
+        wprintw(window,"%02i ... 999", score->rang );
+    }
+    else{
+        wprintw(window,"%02i %s %-3li", score->rang, score->name, score->time );
+    }
+}
+
 void drawHighScoreWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
     (void) windowCol;
 
-    uint32_t row = (windowRow- (MAX_GAME_LEVELS * (SCORE_NUMBER_SCORES_TO_SAVED +2) )) /2, col = 0;
+    uint32_t row = (windowRow- ((MAX_GAME_LEVELS-1) * (SCORE_NUMBER_SCORES_TO_SAVED +2) )) /2, col = 0;
 
-    wmove(window,row,col);
     wbkgd(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
+    wattron(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
 
-    for (int i = GAME_LEVEL_BEGINNER; i < MAX_GAME_LEVELS; ++i) {
+    for (int level = GAME_LEVEL_BEGINNER; level < MAX_GAME_LEVELS; ++level) {
 
-        wprintw(window," %s ", GameLevel_strings[i]);
+        uint32_t textCol = (windowCol - strlen(GameLevel_strings[level])) /2;
+        wmove(window,row,textCol);
+
+        wprintw(window,"%s", GameLevel_strings[level]);
         wmove(window,++row,col);
 
-        for (int j = 1; j < SCORE_NUMBER_SCORES_TO_SAVED+1; ++j) {
-            ScoreEntry *score = getScoreEntry(i, j);
+        for (int rang = 1; rang < SCORE_NUMBER_SCORES_TO_SAVED+1; ++rang) {
+            ScoreEntry *score = getScoreEntry(level, rang);
 
-            if(score->name == null){
-                wprintw(window,"%i ... 999", score->rang );
-            }
-            else{
-                wprintw(window,"%i %s %li", score->rang, score->name, score->time );
-            }
 
-            wmove(window,++row,col);
+            printScoreString(window, score, row, windowCol);
+            row++;
 
             score->free(score);
         }

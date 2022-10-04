@@ -85,7 +85,8 @@ int32_t handleDropDownMenu(WINDOW **items){
 
     int key;
     int selected = 0;
-    while (1) {
+
+    for ever{
         key = getch();
 
         if (key == KEY_DOWN or key == KEY_UP) {
@@ -94,10 +95,9 @@ int32_t handleDropDownMenu(WINDOW **items){
             wnoutrefresh(items[selected]);
 
             if (key == KEY_DOWN) {
-
                 selected=(selected+1) % (NUM_OF_MENU_ENTRIES);
-            } else {
-
+            }
+            if (key == KEY_UP) {
                 selected=(selected + NUM_OF_MENU_ENTRIES - 1) % (NUM_OF_MENU_ENTRIES);
             }
 

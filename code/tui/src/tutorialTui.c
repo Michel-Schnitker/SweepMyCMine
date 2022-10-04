@@ -10,6 +10,7 @@
 #include "types.h"
 #include "board.h"
 #include "pos.h"
+#include "string.h"
 
 #define ENTER 10
 
@@ -19,27 +20,39 @@ static Pos cursor = {.x = 0, .y = 0};
 
 static Pos bombPos1 = {.x = 1, .y = 7};
 static Pos bombPos2 = {.x = 9, .y = 9};
-static Pos bombPos3 = {.x = 4, .y = 0};
+static Pos bombPos3 = {.x = 4, .y = 1};
 static Pos bombPos4 = {.x = 4, .y = 3};
 static Pos bombPos5 = {.x = 7, .y = 3};
 static Pos bombPos6 = {.x = 6, .y = 6};
-
-static Pos openPos1 = {.x = 0, .y = 7};
 
 enum tutSteps{
     StartStep,
     firstMove,
     easyMove,
+    easyOpen,
+    intersectionOne,
+    intersectionTwo,
+    intersectionThree,
+    intersectionFour,
+    nextEasySteps,
     MAX_TUT_STEPS,
 };
 
 static uint32_t tutStep = StartStep;
 
-static const char *level_strings[] = {
-        [StartStep] = "text1",
-        [firstMove] = "text2",
-        [easyMove] = "text3",
-};
+#define TUT_TEXT_LINES 3
+
+static const char *level_string[MAX_TUT_STEPS][TUT_TEXT_LINES] = {
+                                            {"The game starts with a completely covered field.", "We choose any position as the beginning and open the cell.", ""},
+                                            {"If there are exactly as many hidden cells around a cell", "as the number on the cell itself,", "then these are all bombs and can be marked."},
+                                            {"If we know the position of bombs, further cells can be excluded as bombs.", "", ""},
+                                            {"We therefore open this hidden cell next to the bomb", "because one bomb has already been found.", ""},
+                                            {"If we look at this cell,", "two of the three surrounding covered cells are a bomb.", ""},
+                                            {"There is only one bomb around this cell.", "", ""},
+                                            {"Also around this cell is only one bomb from the three covered cells.", "", ""},
+                                            {"That's why there is no bomb in the middle.", "This is an intersection calculation.", ""},
+                                            {"After these bombs are found, more cells can be excluded.", "The game would end here.", ""},
+                                         };
 
 void createNewTutBoard(){
 
@@ -108,20 +121,18 @@ void drawTutorialWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
                 }
 
 
-
             }
-
-
-
         }
 
         wmove(window,++row,col);
         wattron(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
     }
 
-    wmove(window,++row,col);
-
-    wprintw(window," %s ", level_strings[tutStep]);
+    for (int i = 0; i < TUT_TEXT_LINES; ++i) {
+        uint32_t textCol = (windowCol - strlen(level_string[tutStep][i])) /2;
+        wmove(window, ++row, textCol);
+        wprintw(window," %s ", level_string[tutStep][i]);
+    }
 
 }
 
@@ -175,15 +186,48 @@ void doSecondAction(){
 void doEasyAction(){
     tutBoard->field[bombPos1.y][bombPos1.x].markedAsBomb = true;
     tutBoard->field[bombPos2.y][bombPos2.x].markedAsBomb = true;
-    tutBoard->field[openPos1.y][openPos1.x].concealed = false;
+    cursor.x = 0, cursor.y = 6;
+}
+
+void doEasyOpenAction(){
+    tutBoard->field[7][0].concealed = false;
     cursor.x = 0, cursor.y = 7;
 }
 
+void doIntersectionOneAction(){
+    cursor.x = 3, cursor.y = 2;
+}
+
+void doIntersectionTwoAction(){
+    cursor.x = 3, cursor.y = 3;
+}
+
+void doIntersectionThreeAction(){
+    cursor.x = 3, cursor.y = 1;
+}
+
+void doIntersectionFourAction(){
+    cursor.x = 4, cursor.y = 2;
+    tutBoard->field[2][4].concealed = false;
+    tutBoard->field[3][4].markedAsBomb = true, tutBoard->field[1][4].markedAsBomb = true;
+}
+
+void doNextEasyStepsAction(){
+    tutBoard->field[0][4].concealed = false, tutBoard->field[3][5].concealed = false, tutBoard->field[3][6].concealed = false, tutBoard->field[4][6].concealed = false;
+    tutBoard->field[5][6].concealed = false;
+    cursor.x = 5, cursor.y = 4;
+}
 
 static void (*actionForStep[MAX_TUT_STEPS])() ={
         [StartStep] = doFirstAction,
         [firstMove] = doSecondAction,
         [easyMove] = doEasyAction,
+        [easyOpen] = doEasyOpenAction,
+        [intersectionOne] = doIntersectionOneAction,
+        [intersectionTwo] = doIntersectionTwoAction,
+        [intersectionThree] = doIntersectionThreeAction,
+        [intersectionFour] = doIntersectionFourAction,
+        [nextEasySteps] = doNextEasyStepsAction,
 };
 
 void redirectInputToTutorialWindow(int key){
@@ -198,8 +242,27 @@ void redirectInputToTutorialWindow(int key){
             tutStep = easyMove;
             break;
         case easyMove:
+            tutStep = easyOpen;
+            break;
+        case easyOpen:
+            tutStep = intersectionOne;
+            break;
+        case intersectionOne:
+            tutStep = intersectionTwo;
+            break;
+        case intersectionTwo:
+            tutStep = intersectionThree;
+            break;
+        case intersectionThree:
+            tutStep = intersectionFour;
+            break;
+        case intersectionFour:
+            tutStep = nextEasySteps;
+            break;
+        case nextEasySteps:
             tutStep = StartStep;
             break;
+
         default:
             UNREACHABLE;
     }

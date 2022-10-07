@@ -268,6 +268,10 @@ void openGameWindow(){
     if(gameBoard == null){
         initNewGame();
     }
+
+    if (cursor.x >= (int32_t) gameBoard->xSize or cursor.y >= (int32_t) gameBoard->ySize){
+        cursor.x = 0, cursor.y = 0;
+    }
 }
 
 void closeGameWindow(){

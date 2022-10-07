@@ -12,7 +12,7 @@ WINDOW* drawInputWindow(int startCol, int startRow, char *reqString);
 
 void deleteInputWindow(WINDOW *window);
 
-int32_t getIntegerFromInput(WINDOW *window, uint32_t maxDigits);
+int32_t getIntegerFromInput(WINDOW *window, uint32_t startNumber, uint32_t maxNumber, uint32_t windowCol);
 
 char* getStringFromInput(WINDOW *window);
 

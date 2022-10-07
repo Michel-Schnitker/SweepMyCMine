@@ -128,8 +128,11 @@ void drawConfigWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *window){
     wbkgd(window,COLOR_PAIR(COLOR_MAIN_BACKGROUND));
 
     if(requiredNumberStream){
-        WINDOW *inputWindow = drawInputWindow(0,0,"get number");
-        uint32_t newNumber = getIntegerFromInput(inputWindow,3);
+
+        char *string = " Press Numbers for Change. ";
+        uint32_t stringLen = strlen(string);
+        WINDOW *inputWindow = drawInputWindow((windowCol-stringLen)/2,((windowRow - 4)/2)+focusFeature-2,string);
+        uint32_t newNumber = getIntegerFromInput(inputWindow, 0,999, stringLen);
         deleteInputWindow(inputWindow);
 
         switch (focusFeature) {
@@ -281,6 +284,19 @@ void openConfigWindow(){
 }
 
 void closeConfigWindow(){
+
+    if(config->gameMode == GAME_LEVEL_CUSTOMIZE and not checkConstructParameter(config->customizeFieldConfig.xSize,
+                                                                                   config->customizeFieldConfig.ySize,
+                                                                                   config->customizeFieldConfig.bombs)){
+        print_error("Custom parameter x: %i y: %i bombs: %i are not valid",
+                    config->customizeFieldConfig.xSize,
+                    config->customizeFieldConfig.ySize,
+                    config->customizeFieldConfig.bombs);
+
+        config->customizeFieldConfig.xSize = FEATURE_DEFAULT_customizeFieldConfig_xSize;
+        config->customizeFieldConfig.ySize = FEATURE_DEFAULT_customizeFieldConfig_ySize;
+        config->customizeFieldConfig.bombs = FEATURE_DEFAULT_customizeFieldConfig_bombs;
+    }
 
     Features *oldConfig = getGameFeatures();
 

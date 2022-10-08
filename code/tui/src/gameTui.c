@@ -14,6 +14,10 @@
 #include "pos.h"
 #include "mainSolver.h"
 #include "feature.h"
+#include "string.h"
+#include "inputTui.h"
+#include "score.h"
+#include "event.h"
 
 #define UP TUI_GAME_KEY_UP
 #define DOWN TUI_GAME_KEY_DOWN
@@ -109,6 +113,24 @@ void drawGameWindow(uint32_t windowRow, uint32_t windowCol, WINDOW *gameWindow) 
         if(gameBoard->gameWon){
             wattron(gameWindow,COLOR_PAIR(COLOR_CELL_CURSOR));
             wprintw(gameWindow, " YOU  WIN ");
+
+            if(features->gameMode > GAME_LEVEL_CUSTOMIZE and checkIfNewRecord(features->gameMode, gameBoard->runtime)){
+
+                char *string = " New Record! Choose your Name: ";
+                uint32_t stringLen = strlen(string);
+                WINDOW *inputWindow = drawInputWindow((windowCol-stringLen)/2,(windowRow - 4)/2,string);
+                char *inputString = getStringFromInput(inputWindow, 10, stringLen);
+                deleteInputWindow(inputWindow);
+                if(inputString != null){
+                    print_debug("new record with gamelevel %i from player %s",features->gameMode, inputString);
+                    createNewEntry(0,inputString,gameBoard->runtime,features->gameMode);
+                    free(inputString);
+                }
+                else{
+                    print_debug("new record with gamelevel %i from unknown player",features->gameMode);
+                }
+            }
+
         }
         else{
             wattron(gameWindow,COLOR_PAIR(COLOR_CELL_BOMB_INSIDE));
@@ -265,7 +287,7 @@ void openGameWindow(){
     refreshGameBoard();
     refreshFeatures();
 
-    if(gameBoard == null){
+    if(gameBoard == null or gameBoard->gameFinish){
         initNewGame();
     }
 

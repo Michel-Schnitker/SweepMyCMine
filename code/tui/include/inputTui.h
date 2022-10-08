@@ -14,6 +14,6 @@ void deleteInputWindow(WINDOW *window);
 
 int32_t getIntegerFromInput(WINDOW *window, uint32_t startNumber, uint32_t maxNumber, uint32_t windowCol);
 
-char* getStringFromInput(WINDOW *window);
+char* getStringFromInput(WINDOW *window, uint32_t maxDigits, uint32_t windowCol);
 
 #endif //INPUTTUI_H_

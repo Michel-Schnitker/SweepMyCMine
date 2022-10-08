@@ -27,5 +27,7 @@
 #define UNREACHABLE assert(false)
 
 #define stringFromBool(b) ((b) ? "True" : "False")
+#define isAlphabetKey(c) ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z'))
+#define isNumberKey(c) (c >= '0' and c <= '9')
 
 #endif  // TYPES_H_
